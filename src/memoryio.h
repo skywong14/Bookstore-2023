@@ -367,7 +367,6 @@ public:
         file.close();
     }
 
-
     void delete_Atom(string str1, T _value){
         long long index = get_Hash(str1);
         file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
