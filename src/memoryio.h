@@ -29,14 +29,14 @@ void debug(T arg, Args... args){
     debug(args...);
 }
 
-template<class T, int max_block = 500, int info_len = 1>
+template<class T, int max_block = 100, int info_len = 1>
 class Memory {
 private:
     fstream file;
     fstream file_value;
     string file_name, index_name, value_name;
 //    const int block_size = 5;
-    const int block_size = 300;
+    const int block_size = 5000;
     const long long BASE = 199, MOD = 1e9+7;
 
     int sizeofT = sizeof(T);
@@ -269,7 +269,6 @@ public:
     Link_Node find_Block(long long _index, T _value){//**需保证file已处open状态**
         if (!file.is_open()) throw std::runtime_error("ERR::file not open when find_Block");
         std::vector<Link_Node> nodes = get_Nodes();
-        int sz = nodes.size();
         Link_Node cur_node;
         int ptr = 0, ans = 0;
         while (ptr != -1){

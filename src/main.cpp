@@ -25,7 +25,7 @@ int main(){
     Memory<Number> memory;
     memory.initialise("test",0);
 //    debug("__init__done__");
-    int T,x,y;
+    int T,x;
     std::string s1,s2;
     std::cin>>T;
     while (T--){
