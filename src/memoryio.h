@@ -195,7 +195,7 @@ public:
     int new_Value(T value){
         fstream file_tmp(value_name, std::ios::in | std::ios::out | std::ios::binary);
         file_tmp.seekp(0, std::ios::end);
-        int ptr = file_tmp.tellp();
+        int ptr = static_cast<int>(file_tmp.tellp());
         file_tmp.write(reinterpret_cast<char *>(&value), sizeofT);
         file_tmp.close();
         return ptr;
