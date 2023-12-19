@@ -29,14 +29,14 @@ void debug(T arg, Args... args){
     debug(args...);
 }
 
-template<class T, int max_block = 600, int info_len = 1>
+template<class T, int max_block = 400, int info_len = 1>
 class Memory {
 private:
     fstream file;
     fstream file_value;
     string file_name, index_name, value_name;
 //    const int block_size = 5;
-    const int block_size = 250;
+    const int block_size = 300;
     const long long BASE = 199, MOD = 1e9+7;
 
     int sizeofT = sizeof(T);
@@ -249,6 +249,7 @@ public:
         std::vector<Atom_info> init_arr ={std::make_pair(0, ptr1), std::make_pair(MOD, ptr2)};
         override_Block(0, init_arr);
         file.close();
+        file_value.close();
     }
 
 
@@ -307,6 +308,7 @@ public:
 
         if (is_same){
             file.close();
+            file_value.close();
             return;
         }
 
@@ -373,6 +375,7 @@ public:
 
         if (del_pos == -1){
             file.close();
+            file_value.close();
             return;
         }//未找到则直接关文件退出
         values.erase(values.begin() + del_pos);
@@ -381,6 +384,7 @@ public:
         if (values.empty()){
             delete_Node(Block_id);
             file.close();
+            file_value.close();
             return;
         }//销毁块
 
@@ -426,21 +430,6 @@ public:
         file_value.close();
         return ans_T;
     }
-
-    //for debug only
-    /*
-    void print_all(){
-        file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
-        int tmp;long long tmp2;int tnum;
-        file.seekg(0, std::ios::beg);
-        for (int i = 0; i < 4; i++){
-            file.read((char*)&tmp,sizeofint);std::cout<<tmp<<' ';std::cout<<std::endl;
-        }
-        std::cout<<std::endl;
-        for (int i = 0; i < 4; i++){
-            file.read((char*)&tmp,sizeofint);std::cout<<tmp<<' ';std::cout<<std::endl;
-        }
-    }*/
 };
 
 #endif //BOOKSTORE_2023_MEMORYIO_H
