@@ -29,13 +29,12 @@ void debug(T arg, Args... args){
     debug(args...);
 }
 
-template<class T, int max_block = 600, int info_len = 1>
+template<class T, int max_block = 800, int info_len = 1>
 class Memory {
 private:
     fstream file;
     fstream file_value;
     string file_name, index_name, value_name;
-//    const int block_size = 5;
     const int block_size = 250;
     const long long BASE = 199, MOD = 1e9+7;
 
@@ -52,7 +51,6 @@ private:
         int id, pre_node, nxt_node, size;
     };
     T T0 = T();
-    using key_value_pair = std::pair<long long, T>;
     using Atom_info = std::pair<long long, int>;
 public:
     Memory() = default;
@@ -70,7 +68,7 @@ public:
         return Blockhead_ptr + _id * sizeofBlock;
     }
     Link_Node get_Node(int _id){
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_Node");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_Node");
         file.seekg(get_Node_ptr(_id), std::ios::beg);
         Link_Node node;
         file.read((char*)&node, sizeofNode);
@@ -127,7 +125,7 @@ public:
     }
 
     std::vector<Link_Node> get_Nodes(){
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_Nodes");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_Nodes");
         file.seekg(sizeofint * info_len);
         Link_Node all_nodes[max_block];
         file.read((char*)&all_nodes, sizeof(all_nodes));
@@ -136,7 +134,7 @@ public:
     }//调取linked-list中所有nodes, 以vector形式返回
 
     int get_empty_Block(){
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_empty_Block");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_empty_Block");
         std::vector<Link_Node> nodes(get_Nodes());
         int ptr = 0;
         int flag[max_block];
@@ -155,7 +153,7 @@ public:
         return ptr;
     }
     void set_new_Block(int _id){
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when set_new_Block");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when set_new_Block");
         file.seekp(get_Block_ptr(_id), std::ios::beg);
         Atom_info arr[block_size];
         memset(arr, 0, sizeof(arr));
