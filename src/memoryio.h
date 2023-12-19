@@ -78,7 +78,7 @@ public:
     }
 
     std::vector<Atom_info> get_Block(int _id, int sz){
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_all_Atom");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_all_Atom");
         int ptr = get_Block_ptr(_id);
         file.seekg(ptr, std::ios::beg);
         Atom_info arr[sz];
@@ -88,7 +88,7 @@ public:
     }//得到_id的block内所有元素
 
     void override_Block(int _id, std::vector<Atom_info> values){
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when override_Block");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when override_Block");
         int sz = static_cast<int>(values.size());
         Atom_info arr[sz];
         std::copy(values.begin(), values.end(), arr);
@@ -97,13 +97,13 @@ public:
     }//覆写_id的block的内容，不修改linked-list
 
     void override_Node(int _id, Link_Node _node){
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when override_Node");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when override_Node");
         file.seekp(get_Node_ptr(_id), std::ios::beg);
         file.write(reinterpret_cast<char*>(&_node), sizeofNode);
     }
 
     void delete_Node(int _id){
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when delete_Node");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when delete_Node");
         Link_Node node,cur_node = get_Node(_id);
 
         int pre_id = cur_node.pre_node;
@@ -163,26 +163,22 @@ public:
     }
 
     T get_value(int ptr){
-        fstream file_tmp(value_name, std::ios::in | std::ios::binary);
-        file_tmp.seekg(ptr, std::ios::beg);
+        file_value.seekg(ptr, std::ios::beg);
         T tmp;
-        file_tmp.read((char*)&tmp, sizeofT);
-        file_tmp.close();
+        file_value.read((char*)&tmp, sizeofT);
         return tmp;
     }
     std::vector<T> get_values(std::vector<int> ptrs){
-        fstream file_tmp(value_name, std::ios::in | std::ios::binary);
         std::vector<T> values = {};
         int sz = static_cast<int>(ptrs.size());
         T tmp;
         values.reserve(sz);
         for (int i = 0; i < sz; i++){
-            file_tmp.seekg(ptrs[i], std::ios::beg);
-            file_tmp.read((char*)&tmp, sizeofT);
+            file_value.seekg(ptrs[i], std::ios::beg);
+            file_value.read((char*)&tmp, sizeofT);
             values.push_back(tmp);
         }
-        file_tmp.close();
-        return std::move(values);
+        return values;
     }
 
     long long get_Hash(const string& str1){
@@ -193,11 +189,9 @@ public:
     }
 
     int new_Value(T value){
-        fstream file_tmp(value_name, std::ios::in | std::ios::out | std::ios::binary);
-        file_tmp.seekp(0, std::ios::end);
-        int ptr = static_cast<int>(file_tmp.tellp());
-        file_tmp.write(reinterpret_cast<char *>(&value), sizeofT);
-        file_tmp.close();
+        file_value.seekp(0, std::ios::end);
+        int ptr = static_cast<int>(file_value.tellp());
+        file_value.write(reinterpret_cast<char *>(&value), sizeofT);
         return ptr;
     }
 
@@ -208,10 +202,10 @@ public:
             file.write(reinterpret_cast<char *>(&tmpt), sizeofint);
         file.close();
 
-        file.open(value_name, std::ios::out);
+        file_value.open(value_name, std::ios::out);
         for (int i = 0; i < 1; i++)
-            file.write(reinterpret_cast<char *>(&tmpt), sizeofint);
-        file.close();
+            file_value.write(reinterpret_cast<char *>(&tmpt), sizeofint);
+        file_value.close();
     }
     void initialise(string FN = "", int clear_file = 0) {
         if (!FN.empty())
@@ -229,8 +223,14 @@ public:
             file.close();
             file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
         }
+        file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
+        if (!file_value.is_open()){
+            file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
+            file_value.close();
+            file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
+        }
         //head of file
-        int value1 = 1, valuesz = block_size, valueheadptr = sizeofHead, value0 = 0;
+        int valueheadptr = sizeofHead;
         file.seekp(0,std::ios::beg);
         file.write(reinterpret_cast<char *>(&valueheadptr), sizeofint);
         Link_Node init_nodes[max_block];
@@ -281,26 +281,10 @@ public:
     }//返回其lower_bound（<=该元素的最后一个元素）所在的块的信息
 
 
-
-    key_value_pair get_key_value_pair(int ptr){
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_key_value_pair");
-//        int cache_ptrp = file.tellp(), cache_ptrg = file.tellg();
-
-        key_value_pair ans;
-        int value_ptr;
-        file.seekg(ptr, std::ios::beg);
-        file.read((char*)&ans.first, sizeofll);
-        file.read((char*)&value_ptr, sizeofint);
-        ans.second = get_value(value_ptr);
-
-//        file.seekp(cache_ptrp, std::ios::beg);
-//        file.seekg(cache_ptrg, std::ios::beg);
-        return ans;
-    }
-
     void insert_Atom(string _str1, const T& _value){
         long long index = get_Hash(_str1);
         file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
+        file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
         Link_Node node_info = find_Block(index, _value);
         int Block_id = node_info.id;
         std::vector<Atom_info> values = get_Block(Block_id, node_info.size);
@@ -364,11 +348,13 @@ public:
         }
         //不可能在block开头插入，无需修改link-list
         file.close();
+        file_value.close();
     }
 
     void delete_Atom(string str1, T _value){
         long long index = get_Hash(str1);
         file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
+        file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
         Link_Node node_info = find_Block(index, _value);
         int Block_id = node_info.id;
 //        debug("delete::Block_id::", Block_id);
@@ -408,11 +394,13 @@ public:
         override_Block(Block_id, values);
         //TODO: 如果和前后块size加起来不到block_size的2/3，则合并块
         file.close();
+        file_value.close();
     }
 
     std::vector<T> search(string str1){
         long long index = get_Hash(str1);
         file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
+        file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
         Link_Node node_info = find_Block(index);
         int Block_id = node_info.id;
         std::vector<Atom_info> values;
@@ -435,6 +423,7 @@ public:
         }
         ans_T = get_values(ptrs);
         file.close();
+        file_value.close();
         return ans_T;
     }
 
