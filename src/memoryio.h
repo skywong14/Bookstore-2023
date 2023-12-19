@@ -29,14 +29,14 @@ void debug(T arg, Args... args){
     debug(args...);
 }
 
-template<class T, int max_block = 600, int info_len = 1>
+template<class T, int max_block = 500, int info_len = 1>
 class Memory {
 private:
     fstream file;
     fstream file_value;
     string file_name, index_name, value_name;
 //    const int block_size = 5;
-    const int block_size = 300;
+    const int block_size = 400;
     const long long BASE = 199, MOD = 1e9+7;
 
     int sizeofT = sizeof(T);
