@@ -29,14 +29,14 @@ void debug(T arg, Args... args){
     debug(args...);
 }
 
-template<class T, int max_block = 100, int info_len = 1>
+template<class T, int max_block = 500, int info_len = 1>
 class Memory {
 private:
     fstream file;
     fstream file_value;
     string file_name, index_name, value_name;
 //    const int block_size = 5;
-    const int block_size = 5000;
+    const int block_size = 300;
     const long long BASE = 199, MOD = 1e9+7;
 
     int sizeofT = sizeof(T);
@@ -93,7 +93,7 @@ public:
         Atom_info arr[sz];
         std::copy(values.begin(), values.end(), arr);
         file.seekp(get_Block_ptr(_id), std::ios::beg);
-        file.write(reinterpret_cast<char *>(&arr), sizeof(arr));
+        file.write(reinterpret_cast<char*>(&arr), sizeof(arr));
     }//覆写_id的block的内容，不修改linked-list
 
     void override_Node(int _id, Link_Node _node){
@@ -122,7 +122,7 @@ public:
             file.read((char*)&node, sizeofNode);
             node.pre_node = cur_node.pre_node;
             file.seekp(nxt_ptr, std::ios::beg);
-            file.write(reinterpret_cast<char *>(&node), sizeofNode);
+            file.write(reinterpret_cast<char*>(&node), sizeofNode);
         }
     }
 
@@ -188,7 +188,7 @@ public:
     long long get_Hash(const string& str1){
         long long ha = 0;
         for (int i = 0; i < str1.length(); i++)
-            ha = (ha + (long long)(str1[i]) * BASE) % MOD;
+            ha = (ha * BASE + (long long)(str1[i]) ) % MOD;
         return ha;
     }
 
