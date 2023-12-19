@@ -29,7 +29,7 @@ void debug(T arg, Args... args){
     debug(args...);
 }
 
-template<class T, int max_block = 800, int info_len = 1>
+template<class T, int max_block = 1000, int info_len = 1>
 class Memory {
 private:
     fstream file;
