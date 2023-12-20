@@ -252,9 +252,8 @@ public:
 
 
     Link_Node find_Block(long long _index){//**需保证file已处open状态**
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when find_Block");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when find_Block");
         std::vector<Link_Node> nodes = get_Nodes();
-        int sz = nodes.size();
         Link_Node cur_node;
         int ptr = 0, ans = 0;
         while (ptr != -1){
@@ -266,7 +265,7 @@ public:
         return nodes[ans];
     }//返回其lower_bound（<=该元素的最后一个元素）所在的块的id
     Link_Node find_Block(long long _index, T _value){//**需保证file已处open状态**
-        if (!file.is_open()) throw std::runtime_error("ERR::file not open when find_Block");
+//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when find_Block");
         std::vector<Link_Node> nodes = get_Nodes();
         Link_Node cur_node;
         int ptr = 0, ans = 0;
@@ -357,7 +356,6 @@ public:
         file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
         Link_Node node_info = find_Block(index, _value);
         int Block_id = node_info.id;
-//        debug("delete::Block_id::", Block_id);
         std::vector <Atom_info> values = get_Block(Block_id, node_info.size);
         int sz = static_cast<int>(values.size());
         int del_pos = -1;
