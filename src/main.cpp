@@ -29,6 +29,7 @@ int main(){
     std::string s1,s2;
     std::cin>>T;
     while (T--){
+//        std::cout<<T<<std::endl;
         std::cin>>s1;
         if (s1 == "insert"){
             std::cin>>s2>>x;
@@ -40,7 +41,7 @@ int main(){
             memory.delete_Atom(s2,a);
         }else if (s1 == "find"){
             std::cin>>s2;
-            std::vector<Number> val = memory.search(s2);
+            std::vector<Number> val = memory.search_Atom(s2);
             if (!val.empty()){
                 for (auto i:val)
                     std::cout<<i.num<<' ';

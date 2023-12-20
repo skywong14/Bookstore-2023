@@ -35,7 +35,8 @@ private:
     fstream file;
     fstream file_value;
     string file_name, index_name, value_name;
-    const int block_size = 250;
+//    const int block_size = 250;
+    const int block_size = 5;
     const long long BASE = 197, MOD = 1e9+7;
 
     int sizeofT = sizeof(T);
@@ -326,6 +327,12 @@ public:
             int new_id = get_empty_Block();
             Link_Node node1 = node_info, node2;
 
+            if (node1.nxt_node != -1){
+                Link_Node node3 = get_Node(node1.nxt_node);
+                node3.pre_node = new_id;
+                override_Node(node3.id, node3);
+            }
+
             node2.nxt_node = node1.nxt_node;
             node2.pre_node = node1.id;
             node2.size = half2.size();
@@ -355,14 +362,22 @@ public:
         file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
         file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
         Link_Node node_info = find_Block(index, _value);
+
         int Block_id = node_info.id;
         std::vector <Atom_info> values = get_Block(Block_id, node_info.size);
         int sz = static_cast<int>(values.size());
+        std::vector<int> values_ptr = {};
+        values_ptr.reserve(sz);
+        for (int i = 0; i < sz; i++){
+            values_ptr.push_back(values[i].second);
+        }
+        std::vector <T> T_values = get_values(values_ptr);
+
         int del_pos = -1;
         for (int i = 0; i < sz; i++){
             if (values[i].first < index) continue;
             if (values[i].first == index)
-                if (get_value(values[i].second) == _value){
+                if (T_values[i] == _value){
                     del_pos = i;
                     break;
                 }
@@ -375,9 +390,12 @@ public:
             return;
         }//未找到则直接关文件退出
         values.erase(values.begin() + del_pos);
+//        T_values.erase(T_values.begin() + del_pos);
+//        for (auto i:T_values) std::cout<<i.num<<',';debug("<<<<<after  with block:",Block_id);
         //values更新完成
 
         if (values.empty()){
+//            debug("set_empty::",Block_id);
             delete_Node(Block_id);
             file.close();
             file_value.close();
@@ -397,7 +415,7 @@ public:
         file_value.close();
     }
 
-    std::vector<T> search(string str1){
+    std::vector<T> search_Atom(string str1){
         long long index = get_Hash(str1);
         file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
         file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
@@ -409,10 +427,10 @@ public:
         int flag = 0;
         while (Block_id != -1){
             values = get_Block(Block_id, node_info.size);
-            for (auto i: values){
-                if (i.first == index) {
-                    ptrs.push_back(i.second);
-                }else if (i.first > index){
+            for (int i = 0; i < values.size(); i++){
+                if (values[i].first == index) {
+                    ptrs.push_back(values[i].second);
+                }else if (values[i].first > index){
                     flag = 1;
                     break;
                 }
@@ -424,7 +442,7 @@ public:
         ans_T = get_values(ptrs);
         file.close();
         file_value.close();
-        return ans_T;
+        return std::move(ans_T);
     }
 };
 
