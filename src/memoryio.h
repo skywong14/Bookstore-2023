@@ -35,8 +35,7 @@ private:
     fstream file;
     fstream file_value;
     string file_name, index_name, value_name;
-//    const int block_size = 250;
-    const int block_size = 5;
+    const int block_size = 250;
     const long long BASE = 197, MOD = 1e9+7;
 
     int sizeofT = sizeof(T);
