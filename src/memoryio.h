@@ -16,7 +16,6 @@ using std::ifstream;
 using std::ofstream;
 //index_name: 存储链表结构
 //value_name: 存储值
-//file_pool: 可用空间（实现中）
 
 //for dubug only
 template<typename T>
