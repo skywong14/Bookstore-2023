@@ -13,4 +13,7 @@ add_executable(code
         src/main.cpp
         src/user.h
         src/user.cpp
+        src/bookinfo.h
+        src/bookinfo.cpp
+        src/basic_tool.cpp
 )

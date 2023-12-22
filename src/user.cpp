@@ -6,8 +6,6 @@
 
 #pragma once
 #include "user.h"
-#include "memoryio.h"
-#include "basic_tool.h"
 
 using std::string;
 
@@ -56,10 +54,12 @@ void User_class::push_User(const User_info& _user){
 }
 
 ReturnMode User_class::Su(std::vector<string> tokens){
-    if (tokens.size() > 2 || tokens.empty()){
+    if (tokens.size() > 2 || tokens.empty())
         return ReturnMode::Invalid_Format;
-    }
+    if (!(is_char30(tokens[0]) && is_char30(tokens.back())) )
+        return ReturnMode::Invalid_Format;
     string _id = tokens[0];
+    debug("???");
     std::vector<User_info> _user = User_file.search_Atom(_id);
     if (_user.empty()){
         return ReturnMode::Out_Of_Range;
@@ -87,7 +87,8 @@ void User_class::register_User(const User_info& _info){
 }
 
 ReturnMode User_class::Register(std::vector<string> tokens){
-    if (tokens.size() != 3)
+    if (tokens.size() != 3) return ReturnMode::Invalid_Format;
+    if (!(is_char30(tokens[0]) && is_char30(tokens[1]) && is_ascii30(tokens[2])))
         return ReturnMode::Invalid_Format;
     if (!User_file.search_Atom(tokens[0]).empty())
         return ReturnMode::Wrong_Value;
@@ -102,8 +103,9 @@ ReturnMode User_class::Register(std::vector<string> tokens){
 ReturnMode User_class::Passwd(std::vector<string> tokens){
     if (tokens.size() < 2 || tokens.size() > 3)
         return ReturnMode::Invalid_Format;
-
-    //校验密码
+    if ( !(is_char30(tokens[0]) && is_char30(tokens[1]) && is_char30(tokens.back()) ))
+        return ReturnMode::Invalid_Format;
+        //校验密码
     std::vector<User_info> _users = User_file.search_Atom(tokens[0]);
     User_info _user = _users[0];
     string _new_psw = tokens.back();
@@ -123,22 +125,26 @@ ReturnMode User_class::Passwd(std::vector<string> tokens){
 ReturnMode User_class::Delete(std::vector<string> tokens){
     if (tokens.size() != 1)
         return ReturnMode::Invalid_Format;
+    if (!is_char30(tokens[0])) return ReturnMode::Invalid_Format;
     std::vector<User_info> _user =User_file.search_Atom(tokens[0]);
     if (User_online[tokens[0]] > 0 || _user.empty())
         return ReturnMode::Invalid_Operation;
     User_file.delete_Atom(_user[0].id, _user[0]);
     return ReturnMode::Correct;
-}
+}//tokens: [UserID]
 
 ReturnMode User_class::Useradd(std::vector<string> tokens){
     if (tokens.size() != 4)
         return ReturnMode::Invalid_Format;
+    if (!is_Int(tokens[2])) return ReturnMode::Invalid_Format;
     if (std::stoi(tokens[2]) != 1 || std::stoi(tokens[2]) != 3)
-        return ReturnMode::Wrong_Value;
+        return ReturnMode::Invalid_Format;
+    if ( !(is_ascii30(tokens[3]) && is_char30(tokens[0]) && is_char30(tokens[1])) )
+        return ReturnMode::Invalid_Format;
     if (now_permission < 3 || now_permission <= std::stoi(tokens[2]))
         return ReturnMode::Lack_Permission;
     if (!User_file.search_Atom(tokens[0]).empty())
-        return ReturnMode::Invalid_Operation;
+        return ReturnMode::Wrong_Value;
 
     User_info _user(tokens[0], tokens[3], tokens[1], std::stoi(tokens[2]));
     User_file.insert_Atom(_user.id, _user);

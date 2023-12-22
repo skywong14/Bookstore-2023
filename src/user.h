@@ -1,9 +1,9 @@
 //
 // Created by skywa on 2023/12/21.
 //
+#pragma once
 #ifndef BOOKSTORE_2023_USER_H
 #define BOOKSTORE_2023_USER_H
-#pragma once
 #include <cstdio>
 #include <iostream>
 #include <cstring>
@@ -38,7 +38,7 @@ public:
     bool operator>(const User_info& other) const{ return other < (*this); }
     bool operator<=(const User_info& other) const{ return !(other > (*this)); }
     bool operator>=(const User_info& other) const{ return !(other < (*this)); }
-    bool operator==(const User_info& other) const{ return (!((*this) < other) && (!((*this) > other))); }
+    bool operator==(const User_info& other) const{ return (!((*this) < other) && !((*this) > other)); }
     bool operator!=(const User_info& other) const{ return !((*this) == other); }
 };
 
