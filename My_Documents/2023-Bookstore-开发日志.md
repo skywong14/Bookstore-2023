@@ -8,3 +8,7 @@
 - 包含一些常用的工具函数
 - `enum class: ReturnMode` 对操作返回的信息类型简单记录
 - `get_Hash` 字符串哈希
+
+## Date:2023/12/22
+###  编写`user.h/cpp`
+- 完成所有成员函数
