@@ -371,7 +371,6 @@ public:
                 }
             if (values[i].first > index) break;
         }
-//        debug("delete_pos::",del_pos);
         if (del_pos == -1){
             file.close();
             file_value.close();

@@ -111,13 +111,11 @@ void output_tokens(const std::vector<string>& tokens){
 int main(){
     std::vector<string> tokens;
     User_class user_class;
-    cout<<"test..."<<std::endl;
     while (1){
         tokens = get_tokens();
         if (tokens.empty()) continue;
         output_tokens(tokens);
         string com = tokens[0];
-        cout<<"test..."<<com<<std::endl;
         tokens.erase(tokens.begin(), tokens.begin() + 1);
         if (com == "su"){
             ReturnMode t=user_class.Su(tokens);
