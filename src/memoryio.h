@@ -196,13 +196,13 @@ public:
             file_value.write(reinterpret_cast<char *>(&tmpt), sizeofint);
         file_value.close();
     }
-    void initialise(string FN = "", int clear_file = 0) {
+    int initialise(string FN = "", int clear_file = 0) {
         if (!FN.empty())
             file_name = FN;
         index_name = file_name + "_index.txt";
         value_name = file_name + "_value.txt";
 
-        if (check_File_Exists(index_name) && check_File_Exists(value_name) && (!clear_file)) return; //文件已经存在就无需初始化
+        if (check_File_Exists(index_name) && check_File_Exists(value_name) && (!clear_file)) return 0; //文件已经存在就无需初始化
 
         initialise_file();
 
@@ -232,13 +232,14 @@ public:
         node1.value = T0;
         node1.pre_node = -1;
         init_nodes[0] = node1;
-        file.write(reinterpret_cast<char *>(&init_nodes), sizeof(init_nodes));
+        file.write(reinterpret_cast<char*>(&init_nodes), sizeof(init_nodes));
         //the first block (with two Atoms:index_min and index_max)
         int ptr1 = new_Value(T0), ptr2 = new_Value(T0);
         std::vector<Atom_info> init_arr ={std::make_pair(0, ptr1), std::make_pair(MOD, ptr2)};
         override_Block(0, init_arr);
         file.close();
         file_value.close();
+        return 1; // new file
     }
 
 
@@ -370,7 +371,7 @@ public:
                 }
             if (values[i].first > index) break;
         }
-        debug("delete_pos::",del_pos);
+//        debug("delete_pos::",del_pos);
         if (del_pos == -1){
             file.close();
             file_value.close();

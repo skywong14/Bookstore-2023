@@ -21,7 +21,8 @@ void User_class::init_User(){
     now_permission = 0;
     now_select = string20();
     User_online.clear();
-    User_file.initialise(file_name);
+    int flag = User_file.initialise(file_name);
+    if (flag) create_root_account();
 }
 
 
@@ -131,7 +132,7 @@ ReturnMode User_class::Useradd(std::vector<string> tokens){
     if (tokens.size() != 4)
         return ReturnMode::Invalid_Format;
     if (!is_Int(tokens[2])) return ReturnMode::Invalid_Format;
-    if (std::stoi(tokens[2]) != 1 || std::stoi(tokens[2]) != 3)
+    if (std::stoi(tokens[2]) != 1 && std::stoi(tokens[2]) != 3)
         return ReturnMode::Invalid_Format;
     if ( !(is_ascii30(tokens[3]) && is_alnum30(tokens[0]) && is_alnum30(tokens[1])) )
         return ReturnMode::Invalid_Format;

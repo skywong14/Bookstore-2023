@@ -88,9 +88,18 @@ std::vector<string> get_tokens() {
     }
     return std::move(tokens);
 }
-void output_ReturnMode(ReturnMode ret){
+void output_ReturnMode(ReturnMode ret, int Mode = 1){
     if (ret == ReturnMode::Correct) cout<<"Correct"<<std::endl;
     else cout<<"Invalid!"<<std::endl;
+    if (Mode){
+        if (ret == ReturnMode::Invalid_Format) cout<<"Invalid_Format"<<std::endl;
+        if (ret == ReturnMode::Wrong_Value) cout<<"Wrong_Value"<<std::endl;
+        if (ret == ReturnMode::Invalid_Operation) cout<<"Invalid_Operation"<<std::endl;
+        if (ret == ReturnMode::Lack_Permission) cout<<"Lack_Permission"<<std::endl;
+        if (ret == ReturnMode::Out_Of_Range) cout<<"Out_Of_Range"<<std::endl;
+        if (ret == ReturnMode::Other_Error) cout<<"Other_Error"<<std::endl;
+
+    }
 }
 void output_tokens(const std::vector<string>& tokens){
     for (auto i:tokens){
