@@ -18,17 +18,17 @@ using std::string;
 //User info
 class User_info{
 public:
-    string id, name;
+    string30 id, name;
     int permission;
     long long password;
 
     User_info(){
-        id = ""; name = "";
+        id = string30(); name = string30();
         permission = 0; password = 0;
     }
     User_info(const string& _id, const string& _name, const string& _password = "", int _permission = 1){
-        id = _id;
-        name = _name;
+        id = string30(_id);
+        name = string30(_name);
         password = get_Hash(_password);
         permission = _permission;
     }
@@ -46,13 +46,13 @@ class User_class{
 private:
     //User_stack
     const string file_name = "../database/User_info";
-    std::queue<std::pair<User_info, string> > User_stack;
-    string now_User;
+    std::queue<std::pair<User_info, string20> > User_stack;
+    string30 now_User;
     int now_permission;
-    string now_select;
+    string20 now_select;
 
     Memory<User_info> User_file;
-    std::map<string, int> User_online;
+    std::map<string30, int> User_online;
 public:
 
     User_class();

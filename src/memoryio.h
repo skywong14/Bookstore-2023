@@ -38,7 +38,7 @@ private:
     const long long BASE = 197, MOD = 1e9+7;
 
     int sizeofT = sizeof(T);
-    int sizeofint = sizeof(int), sizeofll = sizeof(long long);
+    int sizeofint = sizeof(int);
     int sizeofHead = sizeofint * info_len;
     int sizeofAtom = sizeof(Atom_info);
     int sizeofBlock = sizeofAtom * block_size;
@@ -67,7 +67,6 @@ public:
         return Blockhead_ptr + _id * sizeofBlock;
     }
     Link_Node get_Node(int _id){
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_Node");
         file.seekg(get_Node_ptr(_id), std::ios::beg);
         Link_Node node;
         file.read((char*)&node, sizeofNode);
@@ -75,7 +74,6 @@ public:
     }
 
     std::vector<Atom_info> get_Block(int _id, int sz){
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_all_Atom");
         int ptr = get_Block_ptr(_id);
         file.seekg(ptr, std::ios::beg);
         Atom_info arr[sz];
@@ -85,7 +83,6 @@ public:
     }//得到_id的block内所有元素
 
     void override_Block(int _id, std::vector<Atom_info> values){
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when override_Block");
         int sz = static_cast<int>(values.size());
         Atom_info arr[sz];
         std::copy(values.begin(), values.end(), arr);
@@ -94,13 +91,11 @@ public:
     }//覆写_id的block的内容，不修改linked-list
 
     void override_Node(int _id, Link_Node _node){
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when override_Node");
         file.seekp(get_Node_ptr(_id), std::ios::beg);
         file.write(reinterpret_cast<char*>(&_node), sizeofNode);
     }
 
     void delete_Node(int _id){
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when delete_Node");
         Link_Node node,cur_node = get_Node(_id);
 
         int pre_id = cur_node.pre_node;
@@ -124,7 +119,6 @@ public:
     }
 
     std::vector<Link_Node> get_Nodes(){
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_Nodes");
         file.seekg(sizeofint * info_len);
         Link_Node all_nodes[max_block];
         file.read((char*)&all_nodes, sizeof(all_nodes));
@@ -133,7 +127,6 @@ public:
     }//调取linked-list中所有nodes, 以vector形式返回
 
     int get_empty_Block(){
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when get_empty_Block");
         std::vector<Link_Node> nodes(get_Nodes());
         int ptr = 0;
         int flag[max_block];
@@ -152,7 +145,6 @@ public:
         return ptr;
     }
     void set_new_Block(int _id){
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when set_new_Block");
         file.seekp(get_Block_ptr(_id), std::ios::beg);
         Atom_info arr[block_size];
         memset(arr, 0, sizeof(arr));
@@ -207,8 +199,8 @@ public:
     void initialise(string FN = "", int clear_file = 0) {
         if (!FN.empty())
             file_name = FN;
-        index_name = "./" + file_name + "_index.txt";
-        value_name = "./" + file_name + "_value.txt";
+        index_name = file_name + "_index.txt";
+        value_name = file_name + "_value.txt";
 
         if (check_File_Exists(index_name) && check_File_Exists(value_name) && (!clear_file)) return; //文件已经存在就无需初始化
 
@@ -232,7 +224,7 @@ public:
         file.write(reinterpret_cast<char *>(&valueheadptr), sizeofint);
         Link_Node init_nodes[max_block];
         Link_Node node1;
-        memset(init_nodes, 0, sizeof(init_nodes));
+//        memset(init_nodes, 0, sizeof(init_nodes));
         node1.size = 2;
         node1.nxt_node = -1;
         node1.id = 0;
@@ -251,7 +243,6 @@ public:
 
 
     Link_Node find_Block(long long _index){//**需保证file已处open状态**
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when find_Block");
         std::vector<Link_Node> nodes = get_Nodes();
         Link_Node cur_node;
         int ptr = 0, ans = 0;
@@ -264,7 +255,6 @@ public:
         return nodes[ans];
     }//返回其lower_bound（<=该元素的最后一个元素）所在的块的id
     Link_Node find_Block(long long _index, T _value){//**需保证file已处open状态**
-//        if (!file.is_open()) throw std::runtime_error("ERR::file not open when find_Block");
         std::vector<Link_Node> nodes = get_Nodes();
         Link_Node cur_node;
         int ptr = 0, ans = 0;
@@ -285,7 +275,6 @@ public:
         Link_Node node_info = find_Block(index, _value);
         int Block_id = node_info.id;
         std::vector<Atom_info> values = get_Block(Block_id, node_info.size);
-//        debug("values:");for (auto i:values){debug("   ",i.first, i.second);}debug("values_end.");
         int value_ptr = new_Value(_value);
         int sz = static_cast<int>(values.size());
         std::vector<int> values_ptr = {};
@@ -370,30 +359,27 @@ public:
             values_ptr.push_back(values[i].second);
         }
         std::vector <T> T_values = get_values(values_ptr);
-
         int del_pos = -1;
         for (int i = 0; i < sz; i++){
             if (values[i].first < index) continue;
             if (values[i].first == index)
+//                debug(string(T_values[i].num) , string(_value.num));
                 if (T_values[i] == _value){
                     del_pos = i;
                     break;
                 }
             if (values[i].first > index) break;
         }
-
+        debug("delete_pos::",del_pos);
         if (del_pos == -1){
             file.close();
             file_value.close();
             return;
         }//未找到则直接关文件退出
         values.erase(values.begin() + del_pos);
-//        T_values.erase(T_values.begin() + del_pos);
-//        for (auto i:T_values) std::cout<<i.num<<',';debug("<<<<<after  with block:",Block_id);
         //values更新完成
 
         if (values.empty()){
-//            debug("set_empty::",Block_id);
             delete_Node(Block_id);
             file.close();
             file_value.close();

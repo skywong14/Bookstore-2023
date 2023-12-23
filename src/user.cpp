@@ -1,14 +1,10 @@
 //
 // Created by skywa on 2023/12/21.
 //
-
-
-
 #pragma once
 #include "user.h"
 
 using std::string;
-
 
 User_class::User_class(){
     init_User();
@@ -16,14 +12,14 @@ User_class::User_class(){
 
 void User_class::create_root_account(){
     User_info _admin("root", "root", "sjtu", 7);
-    User_file.insert_Atom(_admin.id, _admin);
+    User_file.insert_Atom(_admin.id.output(), _admin);
 }
 
 void User_class::init_User(){
     User_stack = {};
-    now_User = "";
+    now_User = string30();
     now_permission = 0;
-    now_select = "";
+    now_select = string20();
     User_online.clear();
     User_file.initialise(file_name);
 }
@@ -35,8 +31,8 @@ ReturnMode User_class::pop_User(){
     User_stack.pop();
     if (User_stack.empty()){
         now_permission = 0;
-        now_User = "";
-        now_select = "";
+        now_User = string30();
+        now_select = string20();
         return ReturnMode::Correct;
     }
     now_permission = User_stack.back().first.permission;
@@ -46,20 +42,19 @@ ReturnMode User_class::pop_User(){
 }
 
 void User_class::push_User(const User_info& _user){
-    User_stack.push( std::make_pair(_user, "") );
+    User_stack.push( std::make_pair(_user, string20()) );
     now_permission = _user.permission;
     now_User = _user.id;
-    now_select = "";
+    now_select = string20();
     User_online[now_User]++;
 }
 
 ReturnMode User_class::Su(std::vector<string> tokens){
     if (tokens.size() > 2 || tokens.empty())
         return ReturnMode::Invalid_Format;
-    if (!(is_char30(tokens[0]) && is_char30(tokens.back())) )
+    if (!(is_alnum30(tokens[0]) && is_alnum30(tokens.back())) )
         return ReturnMode::Invalid_Format;
     string _id = tokens[0];
-    debug("???");
     std::vector<User_info> _user = User_file.search_Atom(_id);
     if (_user.empty()){
         return ReturnMode::Out_Of_Range;
@@ -83,12 +78,12 @@ ReturnMode User_class::Logout(){
 }
 
 void User_class::register_User(const User_info& _info){
-    User_file.insert_Atom(_info.id, _info);
+    User_file.insert_Atom(_info.id.output(), _info);
 }
 
 ReturnMode User_class::Register(std::vector<string> tokens){
     if (tokens.size() != 3) return ReturnMode::Invalid_Format;
-    if (!(is_char30(tokens[0]) && is_char30(tokens[1]) && is_ascii30(tokens[2])))
+    if (!(is_alnum30(tokens[0]) && is_alnum30(tokens[1]) && is_ascii30(tokens[2])))
         return ReturnMode::Invalid_Format;
     if (!User_file.search_Atom(tokens[0]).empty())
         return ReturnMode::Wrong_Value;
@@ -103,9 +98,9 @@ ReturnMode User_class::Register(std::vector<string> tokens){
 ReturnMode User_class::Passwd(std::vector<string> tokens){
     if (tokens.size() < 2 || tokens.size() > 3)
         return ReturnMode::Invalid_Format;
-    if ( !(is_char30(tokens[0]) && is_char30(tokens[1]) && is_char30(tokens.back()) ))
+    if ( !(is_alnum30(tokens[0]) && is_alnum30(tokens[1]) && is_alnum30(tokens.back()) ))
         return ReturnMode::Invalid_Format;
-        //校验密码
+    //校验密码
     std::vector<User_info> _users = User_file.search_Atom(tokens[0]);
     User_info _user = _users[0];
     string _new_psw = tokens.back();
@@ -113,11 +108,10 @@ ReturnMode User_class::Passwd(std::vector<string> tokens){
         return ReturnMode::Lack_Permission;
     if (tokens.size() == 3 && (_user.password != get_Hash(tokens[1])))
         return ReturnMode::Lack_Permission;
-
-    //密码/权限正确
+    // 密码/权限正确
     _user.password = get_Hash(tokens.back());
-    User_file.delete_Atom(_user.id, _user);
-    User_file.insert_Atom(_user.id, _user);
+    User_file.delete_Atom(_user.id.output(), _user);
+    User_file.insert_Atom(_user.id.output(), _user);
 
     return ReturnMode::Correct;
 }//tokens: [UserID] ([CurrentPassword])? [NewPassword]
@@ -125,11 +119,11 @@ ReturnMode User_class::Passwd(std::vector<string> tokens){
 ReturnMode User_class::Delete(std::vector<string> tokens){
     if (tokens.size() != 1)
         return ReturnMode::Invalid_Format;
-    if (!is_char30(tokens[0])) return ReturnMode::Invalid_Format;
+    if (!is_alnum30(tokens[0])) return ReturnMode::Invalid_Format;
     std::vector<User_info> _user =User_file.search_Atom(tokens[0]);
     if (User_online[tokens[0]] > 0 || _user.empty())
         return ReturnMode::Invalid_Operation;
-    User_file.delete_Atom(_user[0].id, _user[0]);
+    User_file.delete_Atom(_user[0].id.output(), _user[0]);
     return ReturnMode::Correct;
 }//tokens: [UserID]
 
@@ -139,7 +133,7 @@ ReturnMode User_class::Useradd(std::vector<string> tokens){
     if (!is_Int(tokens[2])) return ReturnMode::Invalid_Format;
     if (std::stoi(tokens[2]) != 1 || std::stoi(tokens[2]) != 3)
         return ReturnMode::Invalid_Format;
-    if ( !(is_ascii30(tokens[3]) && is_char30(tokens[0]) && is_char30(tokens[1])) )
+    if ( !(is_ascii30(tokens[3]) && is_alnum30(tokens[0]) && is_alnum30(tokens[1])) )
         return ReturnMode::Invalid_Format;
     if (now_permission < 3 || now_permission <= std::stoi(tokens[2]))
         return ReturnMode::Lack_Permission;
@@ -147,7 +141,7 @@ ReturnMode User_class::Useradd(std::vector<string> tokens){
         return ReturnMode::Wrong_Value;
 
     User_info _user(tokens[0], tokens[3], tokens[1], std::stoi(tokens[2]));
-    User_file.insert_Atom(_user.id, _user);
+    User_file.insert_Atom(_user.id.output(), _user);
 
     return ReturnMode::Correct;
 }// [UserID] [Password] [Privilege] [Username]

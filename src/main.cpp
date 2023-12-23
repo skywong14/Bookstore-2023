@@ -1,6 +1,66 @@
 //
 // Created by skywa on 2023/12/21.
 //
+//main code for Bookstore_prework
+//
+// Created by skywa on 2023/12/10.
+//
+/*
+#include <iostream>
+#include <cstring>
+#include <cstdio>
+#include <vector>
+#include "memoryio.h"
+#include "basic_tool.h"
+
+int main(){
+    Memory<string30> memory;
+    memory.initialise("test_for_string");
+    int T;
+    std::string s1,s2,x;
+    std::cin>>T;
+    while (T--){
+        std::cin>>s1;
+        if (s1 == "insert"){
+            std::cin>>s2>>x;
+            string30 a(x);
+            memory.insert_Atom(s2,a);
+        }else if (s1 == "delete"){
+            std::cin>>s2>>x;
+            string30 a(x);
+            memory.delete_Atom(s2,a);
+        }else if (s1 == "find"){
+            std::cin>>s2;
+            std::vector<string30> val = memory.search_Atom(s2);
+            if (!val.empty()){
+                for (auto i:val){
+                    std::cout<<i.output()<<' ';
+                }
+                std::cout<<std::endl;
+            }else{
+                std::cout<<"null"<<std::endl;
+            }
+        }
+    }
+    return 0;
+}
+
+
+
+class Number{
+private:
+    int num;
+public:
+    Number():num(0) {}
+    Number(int b):num(b) {}
+    bool operator <(const Number &other) const{ return (*this).num<other.num; }
+    bool operator >(const Number &other) const{ return (*this).num>other.num; }
+    bool operator ==(const Number &other) const{ return (*this).num==other.num; }
+    bool operator <=(const Number &other) const{ return (*this).num<=other.num; }
+    bool operator >=(const Number &other) const{ return (*this).num>=other.num; }
+    bool operator !=(const Number &other) const{ return (*this).num!=other.num; }
+};*/
+
 #pragma once
 #include "user.h"
 #include "bookinfo.h"
@@ -32,36 +92,21 @@ void output_ReturnMode(ReturnMode ret){
     if (ret == ReturnMode::Correct) cout<<"Correct"<<std::endl;
     else cout<<"Invalid!"<<std::endl;
 }
-
-class Number{
-public:
-    char num;
-    char c[60];
-    Number():num(),c() {}
-    Number(char ss):num(ss),c() {}
-    bool operator <(const Number &other) const{ return (*this).num<other.num; }
-    bool operator >(const Number &other) const{ return (*this).num>other.num; }
-    bool operator ==(const Number &other) const{ return (*this).num==other.num; }
-    bool operator <=(const Number &other) const{ return (*this).num<=other.num; }
-    bool operator >=(const Number &other) const{ return (*this).num>=other.num; }
-    bool operator !=(const Number &other) const{ return (*this).num!=other.num; }
-};
-
+void output_tokens(const std::vector<string>& tokens){
+    for (auto i:tokens){
+        std::cout<<i<<',';
+    }
+    std::cout<<std::endl;
+}
 
 int main(){
     std::vector<string> tokens;
     User_class user_class;
-
-    const string file_names = "../database/User_info";
-    Memory<Number> memory;
-    memory.initialise(file_names);
-    return 0;
-
-
     cout<<"test..."<<std::endl;
     while (1){
         tokens = get_tokens();
         if (tokens.empty()) continue;
+        output_tokens(tokens);
         string com = tokens[0];
         cout<<"test..."<<com<<std::endl;
         tokens.erase(tokens.begin(), tokens.begin() + 1);
