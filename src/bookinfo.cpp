@@ -90,9 +90,12 @@ ReturnMode Book_class::Show(std::vector<string> tokens){
         }
         std::sort(Books.begin(), Books.end());
     }
-    for (auto info:Books){
-        std::cout<< info.ISBN.output() << '\t' << info.BookName.output() <<'\t' <<info.Author.output() << '\t'
-                 << info.Keyword.output() << '\t'<< longlong_to_strdouble(info.Price)<< '\t' << info.Quantity << std::endl;
+    if (Books.empty()) std::cout<<std::endl;
+    else {
+        for (auto info:Books){
+            std::cout<< info.ISBN.output() << '\t' << info.BookName.output() <<'\t' <<info.Author.output() << '\t'
+                     << info.Keyword.output() << '\t'<< longlong_to_strdouble(info.Price)<< '\t' << info.Quantity << std::endl;
+        }
     }
     //[ISBN]\t[BookName]\t[Author]\t[Keyword]\t[Price]\t[库存数量]\n
     return ReturnMode::Correct;
@@ -185,7 +188,7 @@ std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& toke
 
     if (has_Author){
         string pre_Author = new_info.Author.output();
-        if (!pre_Author.empty()) Author_file.delete_Atom(Author, now_select);
+        if (!pre_Author.empty()) Author_file.delete_Atom(new_info.Author.output(), now_select);
 
         new_info.Author = string60(Author);
 
