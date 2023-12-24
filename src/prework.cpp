@@ -2,13 +2,13 @@
 //
 // Created by skywa on 2023/12/10.
 //
-
+/*
 #include <iostream>
 #include <cstring>
 #include <cstdio>
 #include <vector>
 #include "memoryio.h"
-/*
+
 class Number{
 public:
     int num;
@@ -21,7 +21,7 @@ public:
     bool operator >=(const Number &other) const{ return (*this).num>=other.num; }
     bool operator !=(const Number &other) const{ return (*this).num!=other.num; }
 };
- */
+
 class String{
 public:
     char num[60];
@@ -73,3 +73,4 @@ int main(){
     }
     return 0;
 }
+ */
