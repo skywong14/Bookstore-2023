@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 #include <ostream>
+#include <cstring>
 using std::string;
 using std::fstream;
 using std::ifstream;
@@ -127,10 +128,10 @@ public:
     }//调取linked-list中所有nodes, 以vector形式返回
 
     int get_empty_Block(){
-        std::vector<Link_Node> nodes(get_Nodes());
-        int ptr = 0;
         int flag[max_block];
         memset(flag, 0, sizeof(flag));
+        std::vector<Link_Node> nodes(get_Nodes());
+        int ptr = 0;
         Link_Node cur_node;
         while (ptr != -1){
             flag[ptr] = 1;
@@ -364,7 +365,6 @@ public:
         for (int i = 0; i < sz; i++){
             if (values[i].first < index) continue;
             if (values[i].first == index)
-//                debug(string(T_values[i].num) , string(_value.num));
                 if (T_values[i] == _value){
                     del_pos = i;
                     break;
@@ -400,6 +400,7 @@ public:
     }
 
     std::vector<T> search_Atom(string str1){
+        if (str1.empty()) return {};
         long long index = get_Hash(str1);
         file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
         file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
@@ -420,6 +421,31 @@ public:
                 }
             }
             if (flag || node_info.nxt_node == -1) break;
+            node_info = get_Node(node_info.nxt_node);
+            Block_id = node_info.id;
+        }
+        ans_T = get_values(ptrs);
+        file.close();
+        file_value.close();
+        return std::move(ans_T);
+    }
+
+    std::vector<T> get_all_values() {
+        long long index = 0;
+        file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
+        file_value.open(value_name, std::ios::in | std::ios::out | std::ios::binary);
+        Link_Node node_info = find_Block(index);
+        int Block_id = node_info.id;
+        std::vector<Atom_info> values;
+        std::vector<int> ptrs = {};
+        std::vector<T> ans_T = {};
+        int flag = 0;
+        while (Block_id != -1){
+            values = get_Block(Block_id, node_info.size);
+            for (int i = 0; i < values.size(); i++)
+                if (values[i].first != MOD && values[i].first != 0)
+                    ptrs.push_back(values[i].second);
+            if (node_info.nxt_node == -1) break;
             node_info = get_Node(node_info.nxt_node);
             Block_id = node_info.id;
         }

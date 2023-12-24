@@ -10,12 +10,6 @@
 
 using std::string;
 
-bool string_size(const string& _str, int _size);
-
-bool is_Int(const std::string& str);
-bool is_alnum30(const string& str);
-bool is_ascii30(const string& str);
-bool is_Double(const string& str);
 
 long long get_Hash(const string& str1);
 
@@ -64,10 +58,9 @@ public:
     bool operator!=(const string60& other) const;
 };
 
-
-
 enum class ReturnMode{
     Correct, Lack_Permission, Invalid_Format, Out_Of_Range, Wrong_Value, Invalid_Operation, Other_Error
 };
+void output_ReturnMode(ReturnMode ret, int Mode = 1);
 
 #endif //BOOKSTORE_2023_BASIC_TOOL_H

@@ -4,48 +4,6 @@
 #pragma once
 #include "basic_tool.h"
 
-bool string_size(const string& _str, int _size){
-    if (_str.size() > _size) return false;
-    return true;
-}
-
-bool is_Int(const std::string& str){
-    try{
-        std::stoi(str);
-        return true;
-    }catch (const std::invalid_argument&){
-        return false;
-    }catch (const std::out_of_range&){
-        return false;
-    }
-}
-
-bool is_alnum30(const string& str){
-    if (str.size() > 30)
-        return false;
-    for (char c : str)
-        if (!std::isalnum(c) && c != ' ')
-            return false;
-    return true;
-}
-bool is_ascii30(const string& str){
-    if (str.size() > 30)
-        return false;
-    for (char c : str)
-        if (c < 32 || c > 126) return false;
-    return true;
-}
-
-bool is_Double(const string& str){
-    try{
-        std::stod(str);
-        return true;
-    }catch (const std::invalid_argument&){
-        return false;
-    }catch (const std::out_of_range&){
-        return false;
-    }
-}
 
 const long long BASE = 197, MOD = 1e9 + 7;
 long long get_Hash(const string& str1){
@@ -100,3 +58,16 @@ bool string60::operator<=(const string60& other) const{ return std::strcmp(ch, o
 bool string60::operator>=(const string60& other) const{ return std::strcmp(ch, other.ch) >= 0; }
 bool string60::operator==(const string60& other) const{ return std::strcmp(ch, other.ch) == 0; }
 bool string60::operator!=(const string60& other) const { return std::strcmp(ch, other.ch) != 0; }
+
+void output_ReturnMode(ReturnMode ret, int Mode){
+    if (ret == ReturnMode::Correct) std::cout<<"Correct"<<std::endl;
+    else std::cout<<"Invalid!"<<std::endl;
+    if (Mode){
+        if (ret == ReturnMode::Invalid_Format) std::cout<<"Invalid_Format"<<std::endl;
+        if (ret == ReturnMode::Wrong_Value) std::cout<<"Wrong_Value"<<std::endl;
+        if (ret == ReturnMode::Invalid_Operation) std::cout<<"Invalid_Operation"<<std::endl;
+        if (ret == ReturnMode::Lack_Permission) std::cout<<"Lack_Permission"<<std::endl;
+        if (ret == ReturnMode::Out_Of_Range) std::cout<<"Out_Of_Range"<<std::endl;
+        if (ret == ReturnMode::Other_Error) std::cout<<"Other_Error"<<std::endl;
+    }
+}

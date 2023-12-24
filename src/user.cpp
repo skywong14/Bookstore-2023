@@ -147,6 +147,11 @@ ReturnMode User_class::Useradd(std::vector<string> tokens){
     return ReturnMode::Correct;
 }// [UserID] [Password] [Privilege] [Username]
 
+void User_class::Select(const string& _str){
+    User_stack.back().second = _str;
+    now_select = _str;
+}
+
 void User_class::exit_system(){
     while (!User_stack.empty())
         User_stack.pop();

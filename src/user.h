@@ -12,6 +12,7 @@
 #include <map>
 #include "basic_tool.h"
 #include "memoryio.h"
+#include "format.h"
 
 using std::string;
 
@@ -48,12 +49,12 @@ private:
     const string file_name = "../database/User_info";
     std::queue<std::pair<User_info, string20> > User_stack;
     string30 now_User;
-    int now_permission;
-    string20 now_select;
 
     Memory<User_info> User_file;
     std::map<string30, int> User_online;
 public:
+    int now_permission;
+    string20 now_select;
 
     User_class();
 
@@ -77,6 +78,8 @@ public:
     ReturnMode Delete(std::vector<string> tokens);
 
     ReturnMode Useradd(std::vector<string> tokens);
+
+    void Select(const string& _ISBN);
 
     void exit_system(); //退出系统时退出User子系统
 

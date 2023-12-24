@@ -68,55 +68,23 @@ public:
 #include <iostream>
 #include <cstring>
 #include <cstdio>
-#include <sstream>
 
 using std::cin;
 using std::cout;
 using std::string;
 
 
-//test user.h
-std::vector<string> get_tokens() {
-    cout<<"test..."<<std::endl;
-    std::vector<string> tokens;
-    string str;
-    std::getline(std::cin, str);
-    std::istringstream iss(str); // 创建字符串流
-    std::string token;
-    while (iss >> token) {
-        tokens.push_back(token);
-    }
-    return std::move(tokens);
-}
-void output_ReturnMode(ReturnMode ret, int Mode = 1){
-    if (ret == ReturnMode::Correct) cout<<"Correct"<<std::endl;
-    else cout<<"Invalid!"<<std::endl;
-    if (Mode){
-        if (ret == ReturnMode::Invalid_Format) cout<<"Invalid_Format"<<std::endl;
-        if (ret == ReturnMode::Wrong_Value) cout<<"Wrong_Value"<<std::endl;
-        if (ret == ReturnMode::Invalid_Operation) cout<<"Invalid_Operation"<<std::endl;
-        if (ret == ReturnMode::Lack_Permission) cout<<"Lack_Permission"<<std::endl;
-        if (ret == ReturnMode::Out_Of_Range) cout<<"Out_Of_Range"<<std::endl;
-        if (ret == ReturnMode::Other_Error) cout<<"Other_Error"<<std::endl;
-
-    }
-}
-void output_tokens(const std::vector<string>& tokens){
-    for (auto i:tokens){
-        std::cout<<i<<',';
-    }
-    std::cout<<std::endl;
-}
-
 int main(){
     std::vector<string> tokens;
     User_class user_class;
+    Book_class book_class;
     while (1){
         tokens = get_tokens();
         if (tokens.empty()) continue;
         output_tokens(tokens);
         string com = tokens[0];
         tokens.erase(tokens.begin(), tokens.begin() + 1);
+        //User
         if (com == "su"){
             ReturnMode t=user_class.Su(tokens);
             output_ReturnMode(t);
@@ -141,10 +109,51 @@ int main(){
             ReturnMode t=user_class.Delete(tokens);
             output_ReturnMode(t);
         }
-        if (com == "quit"){
+
+        if (com == "show"){
+            ReturnMode t=book_class.Show(tokens);
+            output_ReturnMode(t);
+        }
+        if (com == "buy"){
+            ReturnMode t=book_class.Buy(tokens);
+            output_ReturnMode(t);
+        }
+        if (com == "select"){
+            if (tokens.size() != 1){
+                output_ReturnMode(ReturnMode::Invalid_Format);
+                continue;
+            }
+            if (!is_ISBN(tokens[0])){
+                output_ReturnMode(ReturnMode::Invalid_Format);
+                continue;
+            }
+            if (user_class.now_permission < 3){
+                output_ReturnMode(ReturnMode::Lack_Permission);
+                continue;
+            }
+            book_class.find_or_create(tokens[0]);
+            user_class.Select(tokens[0]);
+            output_ReturnMode(ReturnMode::Correct);
+        }
+        if (com == "modify"){
+            std::pair<ReturnMode, string> _ret;
+            _ret=book_class.Modify(tokens, user_class.now_select.output());
+            if (_ret.first == ReturnMode::Correct){
+                user_class.now_select = string20(_ret.second);
+            }
+            output_ReturnMode(_ret.first);
+        }
+        if (com == "import"){
+            ReturnMode t=book_class.Import(tokens, user_class.now_select.output());
+            output_ReturnMode(t);
+        }
+
+        if (com == "quit" || com == "exit"){
+
             user_class.exit_system();
             break;
         }
+
     }
     return 0;
 }

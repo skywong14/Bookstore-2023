@@ -16,4 +16,5 @@ add_executable(code
         src/bookinfo.h
         src/bookinfo.cpp
         src/basic_tool.cpp
+        src/format.cpp
 )
