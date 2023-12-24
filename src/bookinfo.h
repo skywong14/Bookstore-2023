@@ -8,6 +8,7 @@
 #include "memoryio.h"
 #include "format.h"
 #include "basic_tool.h"
+#include "log.h"
 #include <algorithm>
 #include <cstdio>
 #include <iostream>
@@ -15,18 +16,15 @@
 #include <vector>
 using std::string;
 
-
-
-
 class Book_info{
 public:
     string20 ISBN;
     string60 BookName, Author, Keyword; //其中Keyword保留分隔符
     int Quantity;//库存
-    double Price; //单价
+    long long Price; //单价
     Book_info();
     Book_info(const string& _strISBN, const string& _strBookName = "", const string& _strAuthor = "",
-                         const string& _strKeyword = "", int _intPrice = 0);
+                         const string& _strKeyword = "", const string& _strPrice = "0");
     bool operator<(const Book_info& other) const{ return ISBN < other.ISBN; }//meaningless just need and operator
     bool operator>(const Book_info& other) const{ return other < (*this); }
     bool operator<=(const Book_info& other) const{ return !(other > (*this)); }
@@ -54,11 +52,11 @@ public:
 
     ReturnMode Show(std::vector<string> tokens);
     //show (-ISBN=[ISBN] | -name="[BookName]" | -author="[Author]" | -keyword="[Keyword]")?
-    ReturnMode Buy(std::vector<string> tokens);
+    std::pair<ReturnMode, std::pair<long long, int> > Buy(std::vector<string> tokens);
     //buy [ISBN] [Quantity]
     std::pair<ReturnMode, string> Modify(const std::vector<string>& tokens, const string& now_select);
     //modify (-ISBN=[ISBN] | -name="[BookName]" | -author="[Author]" | -keyword="[Keyword]" | -price=[Price])+
-    ReturnMode Import(std::vector<string> tokens, const string& now_select);
+    std::pair<ReturnMode, long long> Import(std::vector<string> tokens, const string& now_select);
     //import [Quantity] [TotalCost]
 };
 

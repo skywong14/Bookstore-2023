@@ -36,24 +36,24 @@ bool is_Int(const std::string& str){
 }
 
 bool is_alnum30(const std::string& str){
-    if (str.size() > 30) return false;
+    if (str.size() > 30 || str.empty()) return false;
     for (char c : str)
-        if (!std::isalnum(c) && c != ' ')
+        if (!(std::isalnum(c) || c=='_' ))
             return false;
     return true;
 }
 
 bool is_ISBN(const std::string& str){
-    if (str.size() > 20) return false;
+    if (str.size() > 20 || str.empty()) return false;
     for (char c : str)
-        if (c < 32 || c > 126) return false;
+        if (!std::isprint(c)) return false;
     return true;
 }
 
 bool is_ascii30(const std::string& str){
-    if (str.size() > 30) return false;
+    if (str.size() > 30 || str.empty()) return false;
     for (char c : str)
-        if (c < 32 || c > 126) return false;
+        if (!std::isprint(c)) return false;
     return true;
 }
 
@@ -67,6 +67,17 @@ bool is_Double(const std::string& str){
     }catch (const std::out_of_range&){
         return false;
     }
+}
+
+long long double_to_longlong(const std::string &_str){
+    double val = std::stod(_str);
+    return round(val * 100);
+}
+std::string longlong_to_strdouble(long long _val){
+    std::string str = std::to_string(_val);
+    if (str == "0") str = "0.00";
+    else str.insert(str.length() - 2, ".");
+    return str;
 }
 
 std::vector<std::string> get_tokens() {

@@ -454,6 +454,21 @@ public:
         file_value.close();
         return std::move(ans_T);
     }
+
+    int read_head(int pos){
+        file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
+        int val;
+        file.seekg((pos - 1) * sizeofint, std::ios::beg);
+        file.read((char*)&val, sizeofint);
+        file.close();
+        return val;
+    }
+    void write_head(int pos, int val){
+        file.open(index_name, std::ios::in | std::ios::out | std::ios::binary);
+        file.seekp((pos - 1) * sizeofint, std::ios::beg);
+        file.write(reinterpret_cast<char*>(&val), sizeofint);
+        file.close();
+    }
 };
 
 #endif //BOOKSTORE_2023_MEMORYIO_H

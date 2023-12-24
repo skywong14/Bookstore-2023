@@ -9,6 +9,7 @@
 #include <cstring>
 #include <sstream>
 #include <vector>
+#include <cmath>
 
 using string_pair = std::pair<std::string, std::string>;
 
@@ -25,6 +26,8 @@ bool is_ascii30(const std::string& str);
 
 bool is_Int(const std::string& str);
 bool is_Double(const std::string& str);
+long long double_to_longlong(const std::string &_str);
+std::string longlong_to_strdouble(long long _val);
 
 
 

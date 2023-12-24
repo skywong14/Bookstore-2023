@@ -133,9 +133,9 @@ ReturnMode User_class::Useradd(std::vector<string> tokens){
         return ReturnMode::Invalid_Format;
     if (!is_Int(tokens[2])) return ReturnMode::Invalid_Format;
     if (std::stoi(tokens[2]) != 1 && std::stoi(tokens[2]) != 3)
-        return ReturnMode::Invalid_Format;
-    if ( !(is_ascii30(tokens[3]) && is_alnum30(tokens[0]) && is_alnum30(tokens[1])) )
-        return ReturnMode::Invalid_Format;
+        return ReturnMode::Wrong_Value;
+    if ( ! (is_ascii30(tokens[3]) && is_alnum30(tokens[0]) && is_alnum30(tokens[1])) )
+        return ReturnMode::Other_Error;
     if (now_permission < 3 || now_permission <= std::stoi(tokens[2]))
         return ReturnMode::Lack_Permission;
     if (!User_file.search_Atom(tokens[0]).empty())

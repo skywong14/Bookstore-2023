@@ -10,12 +10,12 @@ Book_info::Book_info(){
     Price  = 0;
 }
 Book_info::Book_info(const string& _strISBN, const string& _strBookName, const string& _strAuthor,
-        const string& _strKeyword, int _intPrice){
+        const string& _strKeyword, const string& _strPrice){
     ISBN = string20(_strISBN);
     BookName = string60(_strBookName);
     Author = string60(_strAuthor);
     Keyword = string60(_strKeyword); //其中Keyword保留分隔符
-    Price = _intPrice;
+    Price = double_to_longlong(_strPrice);
     Quantity = 0;
 }
 
@@ -92,28 +92,28 @@ ReturnMode Book_class::Show(std::vector<string> tokens){
     }
     for (auto info:Books){
         std::cout<< info.ISBN.output() << '\t' << info.BookName.output() <<'\t'
-                 <<info.Author.output() << '\t' << info.Price<< '\t' << info.Quantity << std::endl;
-        //todo: price format
+                 <<info.Author.output() << '\t' << longlong_to_strdouble(info.Price)<< '\t' << info.Quantity << std::endl;
     }
     //[ISBN]\t[BookName]\t[Author]\t[Keyword]\t[Price]\t[库存数量]\n
     return ReturnMode::Correct;
 }
 //show (-ISBN=[ISBN] | -name="[BookName]" | -author="[Author]" | -keyword="[Keyword]")?
-ReturnMode Book_class::Buy(std::vector<string> tokens){
-    if (tokens.size() != 2) return ReturnMode::Invalid_Format;
-    if (!is_ISBN(tokens[0]) || !is_Int(tokens[1])) return ReturnMode::Invalid_Format;
+std::pair<ReturnMode, std::pair<long long, int> > Book_class::Buy(std::vector<string> tokens){
+    if (tokens.size() != 2) return std::make_pair(ReturnMode::Invalid_Format, std::make_pair(0,0));
+    if (!is_ISBN(tokens[0]) || !is_Int(tokens[1])) return std::make_pair(ReturnMode::Invalid_Format, std::make_pair(0,0));
     string ISBN = tokens[0];
     int dec_num = std::stoi(tokens[1]);
     std::vector<Book_info> infos = Book_file.search_Atom(ISBN);
-    if (infos.empty()) return ReturnMode::Wrong_Value;
-    if (dec_num < 1 || dec_num > infos[0].Quantity) return ReturnMode::Wrong_Value;
+    if (infos.empty()) return std::make_pair(ReturnMode::Wrong_Value, std::make_pair(0,0));
+    if (dec_num < 1 || dec_num > infos[0].Quantity) return std::make_pair(ReturnMode::Invalid_Format, std::make_pair(0,0));
 
     Book_file.delete_Atom(ISBN, infos[0]);
     infos[0].Quantity -= dec_num;
-    double each_price = infos[0].Price;
+    long long each_price = infos[0].Price;
     Book_file.insert_Atom(ISBN, infos[0]);
     //todo:fiance num = dec_num
-    return ReturnMode::Correct;
+    std::cout<<longlong_to_strdouble(each_price * dec_num);
+    return std::make_pair(ReturnMode::Correct, std::make_pair(each_price, dec_num));
 }
 //buy [ISBN] [Quantity]
 std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& tokens, const string& now_select){
@@ -121,7 +121,7 @@ std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& toke
     if (tokens.empty()) return std::make_pair(ReturnMode::Invalid_Format, now_select);
     int has_ISBN = 0, has_BookName = 0, has_Author = 0, has_KeyWord = 0, has_Price  = 0;
     string ISBN, BookName, Author, KeyWord;
-    double Price;
+    long long Price;
     string_pair splits;
     for (const auto& _str: tokens){
         splits = split_equal(_str);
@@ -151,7 +151,7 @@ std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& toke
         }
         if (splits.first == "-price"){
             if (!is_Double(splits.second)) return std::make_pair(ReturnMode::Invalid_Format, now_select);
-            Price = std::stod(splits.second);
+            Price = double_to_longlong(splits.second);
             if (!has_Price) has_Price = 1; else return std::make_pair(ReturnMode::Invalid_Format, now_select);
             continue;
         }
@@ -218,12 +218,12 @@ std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& toke
 }
 //modify (-ISBN=[ISBN] | -name="[BookName]" | -author="[Author]" | -keyword="[Keyword]" | -price=[Price])+
 
-ReturnMode Book_class::Import(std::vector<string> tokens, const string& now_select){
-    if (tokens.size() != 2 || now_select.empty()) return ReturnMode::Invalid_Format;
-    if (!is_Int(tokens[0]) || !is_Double(tokens[1])) return ReturnMode::Invalid_Format;
+std::pair<ReturnMode, long long> Book_class::Import(std::vector<string> tokens, const string& now_select){
+    if (tokens.size() != 2 || now_select.empty()) return std::make_pair(ReturnMode::Invalid_Format, 0);
+    if (!is_Int(tokens[0]) || !is_Double(tokens[1])) return std::make_pair(ReturnMode::Invalid_Format, 0);
     int add_num = std::stoi(tokens[0]);
-    double add_cost = std::stod(tokens[1]);
-    if (add_num < 1 || add_cost < 0) return ReturnMode::Wrong_Value;
+    long long add_cost = double_to_longlong(tokens[1]);
+    if (add_num < 1 || add_cost < 0) return std::make_pair(ReturnMode::Wrong_Value, 0);
 
     Book_info info = Book_file.search_Atom(now_select)[0];
     Book_file.delete_Atom(now_select, info);
@@ -231,7 +231,6 @@ ReturnMode Book_class::Import(std::vector<string> tokens, const string& now_sele
     Book_file.insert_Atom(now_select, info);
 
     //todo::doc.h!!!
-
-    return ReturnMode::Correct;
+    return std::make_pair(ReturnMode::Correct, add_cost);
 }
 //import [Quantity] [TotalCost]

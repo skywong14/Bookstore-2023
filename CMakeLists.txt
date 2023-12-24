@@ -17,4 +17,8 @@ add_executable(code
         src/bookinfo.cpp
         src/basic_tool.cpp
         src/format.cpp
+        src/log.h
+        src/log.cpp
+        src/liner_memoryio.h
+        src/liner_memoryio.h
 )
