@@ -13,9 +13,8 @@ using std::cin;
 using std::cout;
 using std::string;
 
-
 int main(){
-//    freopen("../test/basic/testcase5.in","r",stdin);
+//    freopen("../test/basic/testcase6.in","r",stdin);
     std::vector<string> tokens;
     User_class user_class;
     Book_class book_class;
@@ -23,7 +22,6 @@ int main(){
     while (1){
         tokens = get_tokens();
         if (tokens.empty()) continue;
-//        output_tokens(tokens);
         string com = tokens[0];
         tokens.erase(tokens.begin(), tokens.begin() + 1);
         //User
@@ -51,7 +49,6 @@ int main(){
             ReturnMode t=user_class.Delete(tokens);
             output_ReturnMode(t);
         }
-
 
         if (com == "show"){
             if ((!tokens.empty()) && tokens[0] == "finance"){
@@ -95,7 +92,7 @@ int main(){
         }
         if (com == "import"){
             std::pair<ReturnMode, long long> _ret;
-            _ret=book_class.Import(tokens, user_class.now_select.output());
+            _ret=book_class.Import(tokens, user_class.now_select.output(), user_class.now_permission);
             if (_ret.first == ReturnMode::Correct)
                 log_class.add_Trade( - _ret.second, 1);
             output_ReturnMode(_ret.first);

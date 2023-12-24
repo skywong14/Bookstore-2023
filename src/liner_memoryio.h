@@ -64,18 +64,20 @@ public:
         file.close();
     }
 
-    void add_T(T &t) {
+    void add_T(T t,int pos) {
         file.open(file_name, std::ios::out | std::ios::in | std::ios::binary);
-        file.seekp(0, std::ios::end);
+        file.seekp(get_pos(pos), std::ios::beg);
         file.write(reinterpret_cast<char *>(&t), sizeofT);
         file.close();
     }
 
-    void read_T(T &t, int pos) {
-        file.open(file_name, std::ios::in | std::ios::binary);
+    T read_T(int pos) {
+        file.open(file_name, std::ios::out | std::ios::in | std::ios::binary);
         file.seekg(get_pos(pos), std::ios::beg);
+        T t;
         file.read((char*)&t, sizeofT);
         file.close();
+        return t;
     }
 };
 #endif //BOOKSTORE_2023_LINER_MEMORYIO_H

@@ -16,8 +16,11 @@ class Trade_info{
 public:
     int mode; //1: +  2: -
     long long value; //double as long long
-    Trade_info() = default;
-    explicit Trade_info(long long _val){
+    Trade_info(){
+        mode = 1;
+        value = 0;
+    }
+    Trade_info(long long _val){
         if (_val < 0){
             value = -_val;
             mode = 2;

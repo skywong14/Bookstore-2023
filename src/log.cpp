@@ -5,6 +5,7 @@
 
 void Log_class::init(){
     log_file.initialise(file_name);
+    log_file.write_info(0, 1);
 }
 
 Log_class::Log_class(){
@@ -16,10 +17,9 @@ ReturnMode Log_class::Show_Finance(const std::vector<string>& tokens){
     int num;
     Trade_info info{};
     num = log_file.get_info(1);
-
     if (tokens.empty()){
         for (int i = 1; i <= num; i++){
-            log_file.read_T(info, i);
+            info = log_file.read_T(i);
             if (info.mode == 1) cnt_pos += info.value;
             else cnt_neg += info.value;
         }
@@ -36,7 +36,7 @@ ReturnMode Log_class::Show_Finance(const std::vector<string>& tokens){
     }
 
     for (int i = num - Count + 1; i <= num; i++){
-        log_file.read_T(info, i);
+        info = log_file.read_T(i);
         if (info.mode == 1) cnt_pos += info.value;
         else cnt_neg += info.value;
     }
@@ -47,8 +47,8 @@ ReturnMode Log_class::Show_Finance(const std::vector<string>& tokens){
 
 void Log_class::add_Trade(long long _price, int _num){
     Trade_info info(_price * _num);
-    log_file.add_T(info);
     int num = log_file.get_info(1);
     num++;
+    log_file.add_T(info, num);
     log_file.write_info(num, 1);
 }

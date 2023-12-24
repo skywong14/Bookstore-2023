@@ -111,7 +111,7 @@ std::pair<ReturnMode, std::pair<long long, int> > Book_class::Buy(std::vector<st
     infos[0].Quantity -= dec_num;
     long long each_price = infos[0].Price;
     Book_file.insert_Atom(ISBN, infos[0]);
-    //todo:fiance num = dec_num
+    //todo:fiance num
     std::cout<<longlong_to_strdouble(each_price * dec_num) << std::endl;
     return std::make_pair(ReturnMode::Correct, std::make_pair(each_price, dec_num));
 }
@@ -217,7 +217,8 @@ std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& toke
 }
 //modify (-ISBN=[ISBN] | -name="[BookName]" | -author="[Author]" | -keyword="[Keyword]" | -price=[Price])+
 
-std::pair<ReturnMode, long long> Book_class::Import(std::vector<string> tokens, const string& now_select){
+std::pair<ReturnMode, long long> Book_class::Import(std::vector<string> tokens, const string& now_select, int now_permission){
+    if (now_permission < 3) return std::make_pair(ReturnMode::Lack_Permission, 0);
     if (tokens.size() != 2 || now_select.empty()) return std::make_pair(ReturnMode::Invalid_Format, 0);
     if (!is_Int(tokens[0]) || !is_Double(tokens[1])) return std::make_pair(ReturnMode::Invalid_Format, 0);
     int add_num = std::stoi(tokens[0]);

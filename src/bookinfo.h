@@ -56,7 +56,7 @@ public:
     //buy [ISBN] [Quantity]
     std::pair<ReturnMode, string> Modify(const std::vector<string>& tokens, const string& now_select);
     //modify (-ISBN=[ISBN] | -name="[BookName]" | -author="[Author]" | -keyword="[Keyword]" | -price=[Price])+
-    std::pair<ReturnMode, long long> Import(std::vector<string> tokens, const string& now_select);
+    std::pair<ReturnMode, long long> Import(std::vector<string> tokens, const string& now_select, int now_permission);
     //import [Quantity] [TotalCost]
 };
 
