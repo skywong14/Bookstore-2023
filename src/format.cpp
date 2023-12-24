@@ -82,7 +82,7 @@ std::string longlong_to_strdouble(long long _val){
 
 std::vector<std::string> get_tokens() {
     std::vector<std::string> tokens;
-    if (std::cin.eof()) { tokens = {"exit"}; return tokens;}
+    if (std::cin.eof()) { tokens = {"exit"}; return tokens; }
     std::string str;
     std::getline(std::cin, str);
     std::istringstream iss(str); // 创建字符串流

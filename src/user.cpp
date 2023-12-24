@@ -103,6 +103,7 @@ ReturnMode User_class::Passwd(std::vector<string> tokens){
         return ReturnMode::Invalid_Format;
     //校验密码
     std::vector<User_info> _users = User_file.search_Atom(tokens[0]);
+    if (_users.empty()) return ReturnMode::Wrong_Value;
     User_info _user = _users[0];
     string _new_psw = tokens.back();
     if (tokens.size() == 2 && now_permission != 7)
