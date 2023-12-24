@@ -23,7 +23,7 @@ ReturnMode Log_class::Show_Finance(const std::vector<string>& tokens){
             if (info.mode == 1) cnt_pos += info.value;
             else cnt_neg += info.value;
         }
-        std::cout << '+' << longlong_to_strdouble(cnt_pos) << '-'
+        std::cout << "+ " << longlong_to_strdouble(cnt_pos) << " - "
                   << longlong_to_strdouble(cnt_neg) << std::endl;
         return ReturnMode::Correct;
     }
@@ -40,7 +40,7 @@ ReturnMode Log_class::Show_Finance(const std::vector<string>& tokens){
         if (info.mode == 1) cnt_pos += info.value;
         else cnt_neg += info.value;
     }
-    std::cout << '+' << longlong_to_strdouble(cnt_pos) << '-'
+    std::cout << "+ " << longlong_to_strdouble(cnt_pos) << " - "
               << longlong_to_strdouble(cnt_neg) << std::endl;
     return ReturnMode::Correct;
 }

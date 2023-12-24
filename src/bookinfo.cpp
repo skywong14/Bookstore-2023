@@ -91,8 +91,8 @@ ReturnMode Book_class::Show(std::vector<string> tokens){
         std::sort(Books.begin(), Books.end());
     }
     for (auto info:Books){
-        std::cout<< info.ISBN.output() << '\t' << info.BookName.output() <<'\t'
-                 <<info.Author.output() << '\t' << longlong_to_strdouble(info.Price)<< '\t' << info.Quantity << std::endl;
+        std::cout<< info.ISBN.output() << '\t' << info.BookName.output() <<'\t' <<info.Author.output() << '\t'
+                 << info.Keyword.output() << '\t'<< longlong_to_strdouble(info.Price)<< '\t' << info.Quantity << std::endl;
     }
     //[ISBN]\t[BookName]\t[Author]\t[Keyword]\t[Price]\t[库存数量]\n
     return ReturnMode::Correct;
@@ -112,7 +112,7 @@ std::pair<ReturnMode, std::pair<long long, int> > Book_class::Buy(std::vector<st
     long long each_price = infos[0].Price;
     Book_file.insert_Atom(ISBN, infos[0]);
     //todo:fiance num = dec_num
-    std::cout<<longlong_to_strdouble(each_price * dec_num);
+    std::cout<<longlong_to_strdouble(each_price * dec_num) << std::endl;
     return std::make_pair(ReturnMode::Correct, std::make_pair(each_price, dec_num));
 }
 //buy [ISBN] [Quantity]
@@ -203,7 +203,6 @@ std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& toke
         for (const auto& key_atom: keys){
             KeyWord_file.delete_Atom(key_atom, now_select);
         }
-
         new_info.Keyword = string60(KeyWord);
         keys = split_pipe(KeyWord);
         for (const auto& key_atom: keys){

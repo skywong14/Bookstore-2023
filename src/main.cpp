@@ -15,6 +15,7 @@ using std::string;
 
 
 int main(){
+//    freopen("../test/basic/testcase5.in","r",stdin);
     std::vector<string> tokens;
     User_class user_class;
     Book_class book_class;
