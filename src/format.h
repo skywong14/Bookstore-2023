@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstring>
 #include <sstream>
+#include <algorithm>
 #include <vector>
 #include <cmath>
 
@@ -18,7 +19,7 @@ bool is_Modify_format(const std::string& str);
 bool noQuotationMarks60(const std::string& str);
 bool hasQuotationMarks60(const std::string& str);//有双引号
 
-bool string_size(const std::string& _str, int _size);
+bool same_KeyWord(const std::string& str);
 
 bool is_alnum30(const std::string& str);
 bool is_ISBN(const std::string& str); //ascii20

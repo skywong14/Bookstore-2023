@@ -17,11 +17,15 @@ bool hasQuotationMarks60(const std::string& str){
         return noQuotationMarks60(str.substr(1, str.length() - 2));
     }
     return false;
-}
+} //且key不重复
 
-bool string_size(const std::string& _str, int _size){
-    if (_str.size() > _size) return false;
-    return true;
+bool same_KeyWord(const std::string& str){
+    std::vector<std::string> keys = split_pipe(str);
+    std::sort(keys.begin(), keys.end());
+    if (keys[0].empty()) return true;
+    for (int i = 1; i < keys.size(); i++)
+        if (keys[i] == keys[i-1]) return true;
+    return false;
 }
 
 bool is_Int(const std::string& str){

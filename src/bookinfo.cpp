@@ -147,6 +147,7 @@ std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& toke
             if (!hasQuotationMarks60(splits.second)) return std::make_pair(ReturnMode::Invalid_Format, now_select);
             KeyWord = splits.second.substr(1, splits.second.length() - 2);
             if (!has_KeyWord) has_KeyWord = 1; else return std::make_pair(ReturnMode::Invalid_Format, now_select);
+            if (same_KeyWord(KeyWord)) return std::make_pair(ReturnMode::Wrong_Value, now_select);
             continue;
         }
         if (splits.first == "-price"){
