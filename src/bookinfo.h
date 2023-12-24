@@ -37,10 +37,16 @@ public:
 
 class Book_class{
 private:
+    const string file_name = "Book_info";
+    const string BookName_file_name = "_BookName";
+    const string Author_file_name = "_Author";
+    const string KeyWord_file_name = "_KeyWord";
+    /*
     const string file_name = "../database/Book_info";
     const string BookName_file_name = "../database/_BookName";
     const string Author_file_name = "../database/_Author";
     const string KeyWord_file_name = "../database/_KeyWord";
+    */
     Memory<Book_info> Book_file;
     Memory<string20> BookName_file, Author_file, KeyWord_file;
 public:
