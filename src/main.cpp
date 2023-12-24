@@ -14,7 +14,7 @@ using std::cout;
 using std::string;
 
 int main(){
-//   freopen("../test/basic/testcase3.in","r",stdin);
+//   freopen("../test/basic/testcase6.in","r",stdin);
 //    freopen("out.out","w",stdout);
     std::vector<string> tokens;
     User_class user_class;
@@ -60,6 +60,10 @@ int main(){
 
         if (com == "show"){
             has_com = 1;
+            if (user_class.now_permission < 1) {
+                std::cout<<"Invalid"<<std::endl;
+                continue;
+            }
             if ((!tokens.empty()) && tokens[0] == "finance"){
                 tokens.erase(tokens.begin(), tokens.begin() + 1);
                 ReturnMode t=log_class.Show_Finance(tokens);
