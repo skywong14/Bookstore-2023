@@ -102,6 +102,7 @@ int main(){
             std::pair<ReturnMode, string> _ret;
             _ret=book_class.Modify(tokens, user_class.now_select.output());
             if (_ret.first == ReturnMode::Correct){
+                user_class.change_select(user_class.now_select, string20(_ret.second));
                 user_class.now_select = string20(_ret.second);
             }
             output_ReturnMode(_ret.first);

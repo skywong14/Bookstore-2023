@@ -80,6 +80,8 @@ public:
 
     ReturnMode Useradd(std::vector<string> tokens);
 
+    void change_select(string20 _pre, string20 _now);
+
     void Select(const string& _ISBN);
 
     void exit_system(); //退出系统时退出User子系统

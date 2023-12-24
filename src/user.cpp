@@ -158,4 +158,15 @@ void User_class::exit_system(){
         User_stack.pop();
 }
 
+void User_class::change_select(string20 _pre, string20 _now){
+    std::queue<std::pair<User_info, string20> > tmp = {};
+    std::pair<User_info, string20> atom;
+    while (!User_stack.empty()){
+        atom = User_stack.front(); User_stack.pop();
+        if (atom.second == _pre) atom.second = _now;
+        tmp.push(atom);
+    }
+    User_stack = tmp;
+}
+
 User_class::~User_class() = default;
