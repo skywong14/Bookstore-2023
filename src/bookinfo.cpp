@@ -157,10 +157,7 @@ std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& toke
         }
         return std::make_pair(ReturnMode::Invalid_Format, now_select);
     }
-
     Book_info new_info = Book_file.search_Atom(now_select)[0];
-    Book_file.delete_Atom(new_info.ISBN.output(), new_info);
-
     if (has_ISBN){
         if (now_select == ISBN || !Book_file.search_Atom(ISBN).empty() ) return std::make_pair(ReturnMode::Wrong_Value, now_select);
         new_info.ISBN = string20(ISBN);
@@ -178,6 +175,8 @@ std::pair<ReturnMode, string> Book_class::Modify(const std::vector<string>& toke
             BookName_file.insert_Atom(new_info.BookName.output(), ISBN);
         }
     }
+    Book_file.delete_Atom(new_info.ISBN.output(), new_info);
+
     if (ISBN.empty()) ISBN = new_info.ISBN.output();
 
     if (has_Author){
