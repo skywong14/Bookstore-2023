@@ -32,7 +32,7 @@ public:
 };
 
 class Log_class{
-    const string file_name = "log.txt";
+    const string file_name = "_log.txt";
     MemoryRiver<Trade_info> log_file;
 public:
     void init();

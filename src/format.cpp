@@ -38,7 +38,7 @@ bool is_Int(const std::string& str){
 bool is_alnum30(const std::string& str){
     if (str.size() > 30 || str.empty()) return false;
     for (char c : str)
-        if (!(std::isalnum(c) || c=='_' ))
+        if (!(std::isalnum(c) || c=='_'))
             return false;
     return true;
 }
@@ -82,6 +82,7 @@ std::string longlong_to_strdouble(long long _val){
 
 std::vector<std::string> get_tokens() {
     std::vector<std::string> tokens;
+    if (std::cin.eof()) { tokens = {"exit"}; return tokens;}
     std::string str;
     std::getline(std::cin, str);
     std::istringstream iss(str); // 创建字符串流
