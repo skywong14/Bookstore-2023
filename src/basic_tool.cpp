@@ -62,7 +62,7 @@ bool string60::operator!=(const string60& other) const { return std::strcmp(ch, 
 void output_ReturnMode(ReturnMode ret, int Mode){
 //    if (ret == ReturnMode::Correct) std::cout<<"Correct"<<std::endl;
     if (ret != ReturnMode::Correct) std::cout<<"Invalid"<<std::endl;
-    if (1){
+    if (0){
         if (ret == ReturnMode::Invalid_Format) std::cout<<"Invalid_Format"<<std::endl;
         if (ret == ReturnMode::Wrong_Value) std::cout<<"Wrong_Value"<<std::endl;
         if (ret == ReturnMode::Invalid_Operation) std::cout<<"Invalid_Operation"<<std::endl;

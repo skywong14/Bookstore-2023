@@ -14,7 +14,7 @@ using std::cout;
 using std::string;
 
 int main(){
-//   freopen("../test/basic/testcase3t.in","r",stdin);
+//   freopen("../test/basic/testcase3.in","r",stdin);
 //   freopen("out.out","w",stdout);
     std::vector<string> tokens;
     User_class user_class;
