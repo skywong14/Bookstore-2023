@@ -60,15 +60,19 @@ int main(){
 
         if (com == "show"){
             has_com = 1;
-            if (user_class.now_permission < 1) {
-                std::cout<<"Invalid"<<std::endl;
-                continue;
-            }
             if ((!tokens.empty()) && tokens[0] == "finance"){
+                if (user_class.now_permission < 7) {
+                    std::cout<<"Invalid"<<std::endl;
+                    continue;
+                }
                 tokens.erase(tokens.begin(), tokens.begin() + 1);
                 ReturnMode t=log_class.Show_Finance(tokens);
                 output_ReturnMode(t);
             }else{
+                if (user_class.now_permission < 1) {
+                    std::cout<<"Invalid"<<std::endl;
+                    continue;
+                }
                 ReturnMode t=book_class.Show(tokens);
                 output_ReturnMode(t);
             }

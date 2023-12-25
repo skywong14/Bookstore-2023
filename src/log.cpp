@@ -13,6 +13,7 @@ Log_class::Log_class(){
 }
 
 ReturnMode Log_class::Show_Finance(const std::vector<string>& tokens){
+//    std::cout<<"Fi::";
     long long cnt_pos = 0, cnt_neg = 0;
     int num;
     Trade_info info{};
