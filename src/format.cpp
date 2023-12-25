@@ -79,13 +79,12 @@ long long double_to_longlong(const std::string &_str){
 }
 std::string longlong_to_strdouble(long long _val){
     std::string str = std::to_string(_val);
-//    if (str == "0") str = "0.00";    else {    }
-    if (str.size() == 1)
-        str.insert(0, "00");
-    else
-    if (str.size() == 2)
-        str.insert(0, "0");
-    str.insert(str.length() - 2, ".");
+    if (str == "0") str = "0.00";
+    else {
+        if (str.size() == 1) str.insert(0, "0");
+        if (str.size() == 2) str.insert(0, "0");
+        str.insert(str.length() - 2, ".");
+    }
     return str;
 }
 
