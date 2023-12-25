@@ -44,6 +44,10 @@ int main(){
         }
         if (com == "passwd"){
             has_com = 1;
+            if (user_class.now_permission < 1){
+                output_ReturnMode(ReturnMode::Lack_Permission);
+                continue;
+            }
             ReturnMode t=user_class.Passwd(tokens);
             output_ReturnMode(t);
         }
@@ -69,7 +73,7 @@ int main(){
                 ReturnMode t=log_class.Show_Finance(tokens);
                 output_ReturnMode(t);
             }else{
-                if (user_class.now_permission < 1) {
+                if (user_class.now_permission < 1){
                     std::cout<<"Invalid"<<std::endl;
                     continue;
                 }
@@ -79,6 +83,10 @@ int main(){
         }
         if (com == "buy"){
             has_com = 1;
+            if (user_class.now_permission < 1){
+                output_ReturnMode(ReturnMode::Lack_Permission);
+                continue;
+            }
             std::pair<ReturnMode, std::pair<long long, int> > _ret = book_class.Buy(tokens);;
             if (_ret.first == ReturnMode::Correct) log_class.add_Trade(_ret.second.first, _ret.second.second);
             output_ReturnMode(_ret.first);
@@ -103,6 +111,10 @@ int main(){
         }
         if (com == "modify"){
             has_com = 1;
+            if (user_class.now_permission < 3){
+                output_ReturnMode(ReturnMode::Lack_Permission);
+                continue;
+            }
             std::pair<ReturnMode, string> _ret;
             _ret=book_class.Modify(tokens, user_class.now_select.output());
             if (_ret.first == ReturnMode::Correct){
