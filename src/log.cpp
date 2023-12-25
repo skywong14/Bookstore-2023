@@ -29,7 +29,7 @@ ReturnMode Log_class::Show_Finance(const std::vector<string>& tokens){
     }
     if (tokens.size() > 1 || !is_Int(tokens[0])) return ReturnMode::Invalid_Format;
     int Count = std::stoi(tokens[0]);
-    if (Count < 0) return ReturnMode::Wrong_Value;
+    if (Count < 0 || Count > num) return ReturnMode::Wrong_Value;
     if (Count == 0){
         std::cout<<std::endl;
         return ReturnMode::Correct;
