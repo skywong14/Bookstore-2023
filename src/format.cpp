@@ -6,7 +6,7 @@
 bool noQuotationMarks60(const std::string& str){
     if (str.size() > 60) return false;
     for (char c : str)
-        if (c == '"' || !std::isprint(c)) //ATTENTON:另一种实现方法...? 或者isprint?
+        if (c == '"' || !std::isprint(c))
             return false;
     return true;
 }

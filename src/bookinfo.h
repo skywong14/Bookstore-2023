@@ -41,12 +41,6 @@ private:
     const string BookName_file_name = "_BookName";
     const string Author_file_name = "_Author";
     const string KeyWord_file_name = "_KeyWord";
-    /*
-    const string file_name = "../database/Book_info";
-    const string BookName_file_name = "../database/_BookName";
-    const string Author_file_name = "../database/_Author";
-    const string KeyWord_file_name = "../database/_KeyWord";
-    */
     Memory<Book_info> Book_file;
     Memory<string20> BookName_file, Author_file, KeyWord_file;
 public:
@@ -58,10 +52,13 @@ public:
 
     ReturnMode Show(std::vector<string> tokens);
     //show (-ISBN=[ISBN] | -name="[BookName]" | -author="[Author]" | -keyword="[Keyword]")?
+
     std::pair<ReturnMode, std::pair<long long, int> > Buy(std::vector<string> tokens);
     //buy [ISBN] [Quantity]
+
     std::pair<ReturnMode, string> Modify(const std::vector<string>& tokens, const string& now_select);
     //modify (-ISBN=[ISBN] | -name="[BookName]" | -author="[Author]" | -keyword="[Keyword]" | -price=[Price])+
+
     std::pair<ReturnMode, long long> Import(std::vector<string> tokens, const string& now_select, int now_permission);
     //import [Quantity] [TotalCost]
 };

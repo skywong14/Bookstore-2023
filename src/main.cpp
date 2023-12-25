@@ -14,7 +14,7 @@ using std::cout;
 using std::string;
 
 int main(){
-//   freopen("../test/complex/testcase4/1.in","r",stdin);
+//   freopen("../test/complex/testcase5/2.in","r",stdin);
 //    freopen("out.out","w",stdout);
     std::vector<string> tokens;
     User_class user_class;
@@ -87,7 +87,7 @@ int main(){
                 output_ReturnMode(ReturnMode::Lack_Permission);
                 continue;
             }
-            std::pair<ReturnMode, std::pair<long long, int> > _ret = book_class.Buy(tokens);;
+            std::pair<ReturnMode, std::pair<long long, int> > _ret = book_class.Buy(tokens);
             if (_ret.first == ReturnMode::Correct) log_class.add_Trade(_ret.second.first, _ret.second.second);
             output_ReturnMode(_ret.first);
         }
