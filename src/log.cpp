@@ -69,6 +69,7 @@ void Log_class::Report_Employee() {
 void Log_class::print_Log(int mode) {
     std::time_t currentTime = std::time(nullptr);
     std::tm* localTime = std::localtime(&currentTime);
+    freopen("LOG.txt","a",stdout);
     std::cout << std::endl << "---------------------//Current time: ";
     std::cout << localTime->tm_year + 1900 << "-" << localTime->tm_mon + 1 << "-" << localTime->tm_mday << " ";
     std::cout << localTime->tm_hour << ":" << localTime->tm_min << ":" << localTime->tm_sec << "//---------------------" << std::endl;
@@ -80,14 +81,22 @@ void Log_class::print_Log(int mode) {
     for (int i = 1; i <= size; i++){
         Operation t = logs.read_T(i);
         if (mode == 0){
-            std::cout << t.info1.output() << '\t' << t.user.output() << '\t' << t.info2.output() << '\t' << t.info3.output() <<std::endl;
-        }else{
-            if (mode == t.mode){
-                std::cout << t.info1.output() << '\t' << t.user.output() << '\t' << t.info2.output() << '\t' << t.info3.output() <<std::endl;
+            std::cout << t.info1.output() << '\t' << t.user.output() << '\t' << t.info2.output() << '\t'
+                      << t.info3.output() <<std::endl;
+        }else if (mode == 1){
+            if (t.mode==1 || t.mode == 3){
+                std::cout << t.info1.output() << '\t' << t.user.output() << '\t' << t.info2.output() << '\t'
+                          << t.info3.output() <<std::endl;
+            }
+        }else if (mode == 2) {
+            if (t.mode == 2 || t.mode == 3) {
+                std::cout << t.info1.output() << '\t' << t.user.output() << '\t' << t.info2.output() << '\t'
+                          << t.info3.output() << std::endl;
             }
         }
     }
     std::cout<<"------------log end.------------------"<<std::endl<<std::endl;
+    fclose(stdout);
 }
 
 void Log_class::add_Log(int mode, string user, int permission, string info1, string info2, string info3) {

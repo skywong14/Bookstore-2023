@@ -5,6 +5,16 @@
 
 这是一个书店管理系统，可以通过命令行交互实现各类操作。
 
+## 代码文件结构
+Bookstore程序的代码文件结构如下：
+- `main.cpp`  主函数，程序的入口点。
+- `liner_memoryio.h`和`memoryio.h`  线性文件 和 块状链表
+- `format.h` 和 `format.cpp`  处理`tokens流`以及`token格式`
+- `basic_tool.h` 和 `basic_tool.cpp` 包含报错信息，`int/longlong/double/string/char[]`之间的转换
+- `bookinfo.h` 和 `bookinfo.cpp`  处理书籍信息相关，以及购买和进货指令
+- `log.h` 和 `log.cpp`  日志相关
+- `user.h` 和 `user.cpp`  用户相关
+- 
 ## 主体逻辑说明
 
 ### 子系统
@@ -58,32 +68,7 @@
 #### 日志系统指令
 此部分调用`log`模块
 - `show finance ([Count])?`：在`./Order.txt`找到最后的`Count`条记录(或全部记录)
-- `report finance`, `report employee`, `log`：用csv格式导出
-
-## 代码文件结构
-Bookstore程序的代码文件结构如下：
-- `main.cpp`  主函数，程序的入口点。
-- `liner_memoryio.h`和`memoryio.h`  线性文件 和 块状链表
-- `format.h` 和 `format.cpp`  处理`tokens流`以及`token格式`
-- `basic_tool.h` 和 `basic_tool.cpp` 包含报错信息，`int/longlong/double/string/char[]`之间的转换
-- `bookinfo.h` 和 `bookinfo.cpp`  处理书籍信息相关，以及购买和进货指令
-- `log.h` 和 `log.cpp`  日志相关
-- `user.h` 和 `user.cpp`  用户相关
-## 类及成员说明
-
-### 功能说明
-#### Memoryio类
-- 块状链表：在`main.cpp`中实例化类模板，支持根据`index`实现查找、新增、修改、删除。
-- 顺序文件：线性存储，一个文件对应一个`class`类型信息的存储。
-#### Bookinfo类成员变量
-- `index`: `[ISBN]`
-- `value`：`[ISBN]-[BookName]-[Auther]-[Keyword]`，后面三个值统一长度后存储。
-#### User类成员变量
-- `index`: `username`
-- `value`：存储内容即为`Userinfo`
-
-#### Log类（负责Document）
-该类负责生成和保存文档，以及`show finance`指令
+- `report finance`, `report employee`, `log`：用txt格式导出到`Log.txt`
 
 ## 文件存储说明
 

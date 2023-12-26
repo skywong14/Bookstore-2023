@@ -116,7 +116,7 @@ int main(){
             if (_ret.first == ReturnMode::Correct) log_class.add_Trade(_ret.second.first, _ret.second.second);
             output_ReturnMode(_ret.first, "buy "+std::to_string(user_class.now_permission));
             if (_ret.first == ReturnMode::Correct){
-                log_class.add_Log(0, Now_user, Now_permission, "buy", "book_ISBN:" + tokens[0], "trade_num:" + tokens[2]);
+                log_class.add_Log(1, Now_user, Now_permission, "buy", "book_ISBN:" + tokens[0], "trade_num:" + tokens[2]);
             }
         }
         if (com == "select"){
@@ -163,7 +163,7 @@ int main(){
                 log_class.add_Trade( - _ret.second, 1);
             output_ReturnMode(_ret.first, "import");
             if (_ret.first == ReturnMode::Correct){
-                log_class.add_Log(1, Now_user, Now_permission, "import", "Quantity:"+tokens[0], "Cost:"+tokens[1]);
+                log_class.add_Log(3, Now_user, Now_permission, "import", "Quantity:"+tokens[0], "Cost:"+tokens[1]);
             }
         }
         if (com == "log"){
@@ -176,7 +176,7 @@ int main(){
         }
         if (com == "report"){
             has_com = 1;
-            if (tokens.size() == 1 && Now_permission < 7){
+            if (tokens.size() == 1 && Now_permission == 7){
                 if (tokens[0] == "finance"){
                     log_class.Report_Finance();
                     continue;
@@ -193,6 +193,7 @@ int main(){
 
         if (com == "quit" || com == "exit"){
             user_class.exit_system();
+            log_class.add_Log(0, "", 0, "quit_system");
             break;
         }
         if (!has_com) std::cout<<"Invalid"<<std::endl;
