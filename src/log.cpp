@@ -13,7 +13,6 @@ Log_class::Log_class(){
 }
 
 ReturnMode Log_class::Show_Finance(const std::vector<string>& tokens){
-//    std::cout<<"Fi::";
     long long cnt_pos = 0, cnt_neg = 0;
     int num;
     Trade_info info{};
@@ -52,4 +51,16 @@ void Log_class::add_Trade(long long _price, int _num){
     num++;
     log_file.add_T(info, num);
     log_file.write_info(num, 1);
+}
+
+void Log_class::Log() {
+
+}
+
+void Log_class::Report_Finance() {
+
+}
+
+void Log_class::Report_Employee() {
+
 }

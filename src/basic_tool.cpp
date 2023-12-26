@@ -5,7 +5,7 @@
 #include "basic_tool.h"
 
 
-const long long BASE = 197, MOD = 1e9 + 7;
+const long long BASE = 199, MOD = 1e10 + 19;
 long long get_Hash(const string& str1){
     long long ha = 0;
     for (int i = 0; i < str1.length(); i++)
@@ -59,15 +59,17 @@ bool string60::operator>=(const string60& other) const{ return std::strcmp(ch, o
 bool string60::operator==(const string60& other) const{ return std::strcmp(ch, other.ch) == 0; }
 bool string60::operator!=(const string60& other) const { return std::strcmp(ch, other.ch) != 0; }
 
-void output_ReturnMode(ReturnMode ret, int Mode){
+void output_ReturnMode(ReturnMode ret, string extra_info){
 //    if (ret == ReturnMode::Correct) std::cout<<"Correct"<<std::endl;
-    if (ret != ReturnMode::Correct) std::cout<<"Invalid"<<std::endl;
+    if (ret != ReturnMode::Correct) std::cout<<"Invalid";
     if (0){
-        if (ret == ReturnMode::Invalid_Format) std::cout<<"Invalid_Format"<<std::endl;
-        if (ret == ReturnMode::Wrong_Value) std::cout<<"Wrong_Value"<<std::endl;
-        if (ret == ReturnMode::Invalid_Operation) std::cout<<"Invalid_Operation"<<std::endl;
-        if (ret == ReturnMode::Lack_Permission) std::cout<<"Lack_Permission"<<std::endl;
-        if (ret == ReturnMode::Out_Of_Range) std::cout<<"Out_Of_Range"<<std::endl;
-        if (ret == ReturnMode::Other_Error) std::cout<<"Other_Error"<<std::endl;
+        if (ret == ReturnMode::Invalid_Format) std::cout<<" Invalid_Format";
+        if (ret == ReturnMode::Wrong_Value) std::cout<<" Wrong_Value";
+        if (ret == ReturnMode::Invalid_Operation) std::cout<<" Invalid_Operation";
+        if (ret == ReturnMode::Lack_Permission) std::cout<<" Lack_Permission";
+        if (ret == ReturnMode::Out_Of_Range) std::cout<<" Out_Of_Range";
+        if (ret == ReturnMode::Other_Error) std::cout<<" Other_Error";
+        if (ret != ReturnMode::Correct) std::cout<<" "<<extra_info;
     }
+    if (ret != ReturnMode::Correct) std::cout<<std::endl;
 }

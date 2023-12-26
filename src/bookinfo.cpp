@@ -103,12 +103,12 @@ ReturnMode Book_class::Show(std::vector<string> tokens){
 //show (-ISBN=[ISBN] | -name="[BookName]" | -author="[Author]" | -keyword="[Keyword]")?
 std::pair<ReturnMode, std::pair<long long, int> > Book_class::Buy(std::vector<string> tokens){
     if (tokens.size() != 2) return std::make_pair(ReturnMode::Invalid_Format, std::make_pair(0,0));
-    if (!is_ISBN(tokens[0]) || !is_Int(tokens[1])) return std::make_pair(ReturnMode::Invalid_Format, std::make_pair(0,0));
+    if (!is_ISBN(tokens[0]) || !is_Int(tokens[1])) return std::make_pair(ReturnMode::Invalid_Operation, std::make_pair(0,0));
     string ISBN = tokens[0];
     int dec_num = std::stoi(tokens[1]);
     std::vector<Book_info> infos = Book_file.search_Atom(ISBN);
     if (infos.empty()) return std::make_pair(ReturnMode::Wrong_Value, std::make_pair(0,0));
-    if (dec_num < 1 || dec_num > infos[0].Quantity) return std::make_pair(ReturnMode::Invalid_Format, std::make_pair(0,0));
+    if (dec_num < 1 || dec_num > infos[0].Quantity) return std::make_pair(ReturnMode::Wrong_Value, std::make_pair(0,0));
 
     Book_file.delete_Atom(ISBN, infos[0]);
     infos[0].Quantity -= dec_num;

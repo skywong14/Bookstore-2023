@@ -31,6 +31,12 @@ public:
     }
 };
 
+class Operation{
+    int mode, user_permission;
+    string60 user;
+    string tt;
+};
+
 class Log_class{
     const string file_name = "_log.txt";
     MemoryRiver<Trade_info> log_file;
@@ -38,6 +44,9 @@ public:
     void init();
     Log_class();
     ReturnMode Show_Finance(const std::vector<string>& tokens);
+    void Report_Finance();
+    void Report_Employee();
+    void Log();
     void add_Trade(long long _price, int _num);
 };
 

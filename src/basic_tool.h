@@ -61,6 +61,6 @@ public:
 enum class ReturnMode{
     Correct, Lack_Permission, Invalid_Format, Out_Of_Range, Wrong_Value, Invalid_Operation, Other_Error
 };
-void output_ReturnMode(ReturnMode ret, int Mode = 0);
+void output_ReturnMode(ReturnMode ret, string extra_info = "");
 
 #endif //BOOKSTORE_2023_BASIC_TOOL_H

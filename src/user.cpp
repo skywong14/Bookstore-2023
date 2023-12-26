@@ -35,10 +35,11 @@ ReturnMode User_class::pop_User(){
         now_User = string30();
         now_select = string20();
         return ReturnMode::Correct;
+    } else{
+        now_permission = User_stack.back().first.permission;
+        now_User = User_stack.back().first.id;
+        now_select = User_stack.back().second;
     }
-    now_permission = User_stack.back().first.permission;
-    now_User = User_stack.back().first.id;
-    now_select = User_stack.back().second;
     return ReturnMode::Correct;
 }
 

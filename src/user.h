@@ -25,7 +25,7 @@ public:
 
     User_info(){
         id = string30(); name = string30();
-        permission = 0; password = 0;
+        permission = 1; password = 0;
     }
     User_info(const string& _id, const string& _name, const string& _password = "", int _permission = 1){
         id = string30(_id);

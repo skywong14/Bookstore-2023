@@ -30,22 +30,22 @@ int main(){
         if (com == "su"){
             has_com = 1;
             ReturnMode t=user_class.Su(tokens);
-            output_ReturnMode(t);
+            output_ReturnMode(t, "su");
         }
         if (com == "logout"){
             has_com = 1;
             ReturnMode t=user_class.Logout();
-            output_ReturnMode(t);
+            output_ReturnMode(t, "logout");
         }
         if (com == "register"){
             has_com = 1;
             ReturnMode t=user_class.Register(tokens);
-            output_ReturnMode(t);
+            output_ReturnMode(t, "register");
         }
         if (com == "passwd"){
             has_com = 1;
             if (user_class.now_permission < 1){
-                output_ReturnMode(ReturnMode::Lack_Permission);
+                output_ReturnMode(ReturnMode::Lack_Permission, "passwd");
                 continue;
             }
             ReturnMode t=user_class.Passwd(tokens);
@@ -54,42 +54,42 @@ int main(){
         if (com == "useradd"){
             has_com = 1;
             ReturnMode t=user_class.Useradd(tokens);
-            output_ReturnMode(t);
+            output_ReturnMode(t, "useradd");
         }
         if (com == "delete"){
             has_com = 1;
             ReturnMode t=user_class.Delete(tokens);
-            output_ReturnMode(t);
+            output_ReturnMode(t, "delete");
         }
 
         if (com == "show"){
             has_com = 1;
             if ((!tokens.empty()) && tokens[0] == "finance"){
                 if (user_class.now_permission < 7) {
-                    std::cout<<"Invalid"<<std::endl;
+                    output_ReturnMode(ReturnMode::Lack_Permission, "show finance");
                     continue;
                 }
                 tokens.erase(tokens.begin(), tokens.begin() + 1);
                 ReturnMode t=log_class.Show_Finance(tokens);
-                output_ReturnMode(t);
+                output_ReturnMode(t, "show finance");
             }else{
                 if (user_class.now_permission < 1){
-                    std::cout<<"Invalid"<<std::endl;
+                    output_ReturnMode(ReturnMode::Lack_Permission, "show");
                     continue;
                 }
                 ReturnMode t=book_class.Show(tokens);
-                output_ReturnMode(t);
+                output_ReturnMode(t, "show");
             }
         }
         if (com == "buy"){
             has_com = 1;
             if (user_class.now_permission < 1){
-                output_ReturnMode(ReturnMode::Lack_Permission);
+                output_ReturnMode(ReturnMode::Lack_Permission, "buy."+std::to_string(user_class.now_permission));
                 continue;
             }
             std::pair<ReturnMode, std::pair<long long, int> > _ret = book_class.Buy(tokens);
             if (_ret.first == ReturnMode::Correct) log_class.add_Trade(_ret.second.first, _ret.second.second);
-            output_ReturnMode(_ret.first);
+            output_ReturnMode(_ret.first, "buy "+std::to_string(user_class.now_permission));
         }
         if (com == "select"){
             has_com = 1;
@@ -102,7 +102,7 @@ int main(){
                 continue;
             }
             if (user_class.now_permission < 3){
-                output_ReturnMode(ReturnMode::Lack_Permission);
+                output_ReturnMode(ReturnMode::Lack_Permission, "select");
                 continue;
             }
             book_class.find_or_create(tokens[0]);
@@ -112,7 +112,7 @@ int main(){
         if (com == "modify"){
             has_com = 1;
             if (user_class.now_permission < 3){
-                output_ReturnMode(ReturnMode::Lack_Permission);
+                output_ReturnMode(ReturnMode::Lack_Permission, "modify."+std::to_string(user_class.now_permission));
                 continue;
             }
             std::pair<ReturnMode, string> _ret;
@@ -121,7 +121,7 @@ int main(){
                 user_class.change_select(user_class.now_select, string20(_ret.second));
                 user_class.now_select = string20(_ret.second);
             }
-            output_ReturnMode(_ret.first);
+            output_ReturnMode(_ret.first, "modify "+std::to_string(user_class.now_permission));
         }
         if (com == "import"){
             has_com = 1;
@@ -129,8 +129,32 @@ int main(){
             _ret=book_class.Import(tokens, user_class.now_select.output(), user_class.now_permission);
             if (_ret.first == ReturnMode::Correct)
                 log_class.add_Trade( - _ret.second, 1);
-            output_ReturnMode(_ret.first);
+            output_ReturnMode(_ret.first, "import");
         }
+        if (com == "log"){
+            has_com = 1;
+            if (!tokens.empty()){
+                std::cout<<"Invalid"<<std::endl;
+                continue;
+            }
+            log_class.Log();
+        }
+        if (com == "report"){
+            has_com = 1;
+            if (tokens.size() == 1){
+                if (tokens[0] == "finance"){
+                    log_class.Report_Finance();
+                    continue;
+                }
+                if (tokens[0] == "employee"){
+                    log_class.Report_Employee();
+                    continue;
+                }
+            }
+            std::cout<<"Invalid"<<std::endl;
+            continue;
+        }
+
 
         if (com == "quit" || com == "exit"){
             user_class.exit_system();
