@@ -67,6 +67,8 @@ public:
 
     void register_User(const User_info& _info);
 
+    std::pair<string, int> get_Now();
+
     ReturnMode Su(std::vector<string> tokens);
 
     ReturnMode Logout();

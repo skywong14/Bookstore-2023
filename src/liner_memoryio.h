@@ -36,7 +36,7 @@ public:
     void initialise(string FN = "") {
         if (FN != "") file_name = FN;
 
-        if (check_File_Exists(file_name)) return; //文件已经存在就无需初始化
+        if (check_File_Exists(file_name)) return;
 
         file.open(file_name, std::ios::out);
         int tmp = 0;

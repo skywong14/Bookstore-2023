@@ -120,6 +120,7 @@ ReturnMode User_class::Passwd(std::vector<string> tokens){
 }//tokens: [UserID] ([CurrentPassword])? [NewPassword]
 
 ReturnMode User_class::Delete(std::vector<string> tokens){
+    if (now_permission < 7) return ReturnMode::Lack_Permission;
     if (tokens.size() != 1)
         return ReturnMode::Invalid_Format;
     if (!is_alnum30(tokens[0])) return ReturnMode::Invalid_Format;
@@ -168,6 +169,10 @@ void User_class::change_select(string20 _pre, string20 _now){
         tmp.push(atom);
     }
     User_stack = tmp;
+}
+
+std::pair<string, int> User_class::get_Now(){
+    return std::make_pair( (!User_stack.empty())?User_stack.back().first.id.output():"_Visitor_" , now_permission);
 }
 
 User_class::~User_class() = default;
