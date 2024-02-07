@@ -14,13 +14,16 @@ using std::cout;
 using std::string;
 
 int main(){
-//   freopen("../test/complex/testcase5/2.in","r",stdin);
+    int line_number = 0;
+//    freopen("../test/complex/testcase3/1.in","r",stdin);
 //    freopen("out.out","w",stdout);
     std::vector<string> tokens;
     User_class user_class;
     Book_class book_class;
     Log_class log_class;
     while (1){
+        line_number++;
+//        std::cout<<line_number<<':';
         auto [Now_user, Now_permission] = user_class.get_Now();
         tokens = get_tokens();
         if (tokens.empty()) continue;
@@ -30,7 +33,7 @@ int main(){
         //User
         if (com == "su"){
             has_com = 1;
-            ReturnMode t=user_class.Su(tokens);
+            ReturnMode t = user_class.Su(tokens);
             output_ReturnMode(t, "su");
             if (t == ReturnMode::Correct){
                 log_class.add_Log(0, Now_user, Now_permission, "su", "user_login:" + tokens[0] );
@@ -38,7 +41,7 @@ int main(){
         }
         if (com == "logout"){
             has_com = 1;
-            ReturnMode t=user_class.Logout();
+            ReturnMode t = user_class.Logout();
             output_ReturnMode(t, "logout");
             if (t == ReturnMode::Correct){
                 log_class.add_Log(0, Now_user, Now_permission, "logout", "user_logout:" + Now_user );

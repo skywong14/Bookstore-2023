@@ -34,11 +34,10 @@ ReturnMode User_class::pop_User(){
         now_permission = 0;
         now_User = string30();
         now_select = string20();
-        return ReturnMode::Correct;
     } else{
-        now_permission = User_stack.back().first.permission;
-        now_User = User_stack.back().first.id;
-        now_select = User_stack.back().second;
+        now_permission = User_stack.top().first.permission;
+        now_User = User_stack.top().first.id;
+        now_select = User_stack.top().second;
     }
     return ReturnMode::Correct;
 }
@@ -151,20 +150,23 @@ ReturnMode User_class::Useradd(std::vector<string> tokens){
 }// [UserID] [Password] [Privilege] [Username]
 
 void User_class::Select(const string& _str){
-    User_stack.back().second = _str;
+    User_stack.top().second = _str;
     now_select = _str;
 }
 
 void User_class::exit_system(){
-    while (!User_stack.empty())
+    while (!User_stack.empty()){
+//        std::cout<<User_stack.size()<<'!'<<std::endl;
+//        std::cout<<User_stack.top().first.id.output()<<std::endl;
         User_stack.pop();
+    }
 }
 
 void User_class::change_select(string20 _pre, string20 _now){
-    std::queue<std::pair<User_info, string20> > tmp = {};
+    std::stack<std::pair<User_info, string20> > tmp = {};
     std::pair<User_info, string20> atom;
     while (!User_stack.empty()){
-        atom = User_stack.front(); User_stack.pop();
+        atom = User_stack.top(); User_stack.pop();
         if (atom.second == _pre) atom.second = _now;
         tmp.push(atom);
     }
@@ -172,7 +174,7 @@ void User_class::change_select(string20 _pre, string20 _now){
 }
 
 std::pair<string, int> User_class::get_Now(){
-    return std::make_pair( (!User_stack.empty())?User_stack.back().first.id.output():"_Visitor_" , now_permission);
+    return std::make_pair( (!User_stack.empty())?User_stack.top().first.id.output():"_Visitor_" , now_permission);
 }
 
 User_class::~User_class() = default;

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
-#include <queue>
+#include <stack>
 #include <map>
 #include "basic_tool.h"
 #include "memoryio.h"
@@ -47,7 +47,7 @@ class User_class{
 private:
     //User_stack
     const string file_name = "_User_info";
-    std::queue<std::pair<User_info, string20> > User_stack;
+    std::stack<std::pair<User_info, string20> > User_stack;
     string30 now_User;
 
     Memory<User_info> User_file;
