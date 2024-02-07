@@ -15,8 +15,8 @@ using std::string;
 
 int main(){
     int line_number = 0;
-//    freopen("../test/complex/testcase3/1.in","r",stdin);
-//    freopen("out.out","w",stdout);
+    freopen("../test/complex/testcase3/1.in","r",stdin);
+    freopen("out.out","w",stdout);
     std::vector<string> tokens;
     User_class user_class;
     Book_class book_class;
@@ -161,7 +161,7 @@ int main(){
         if (com == "import"){
             has_com = 1;
             std::pair<ReturnMode, long long> _ret;
-            _ret=book_class.Import(tokens, user_class.now_select.output(), user_class.now_permission);
+            _ret = book_class.Import(tokens, user_class.now_select.output(), user_class.now_permission);
             if (_ret.first == ReturnMode::Correct)
                 log_class.add_Trade( - _ret.second, 1);
             output_ReturnMode(_ret.first, "import");

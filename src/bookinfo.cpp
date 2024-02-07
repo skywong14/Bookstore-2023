@@ -107,12 +107,14 @@ std::pair<ReturnMode, std::pair<long long, int> > Book_class::Buy(std::vector<st
     string ISBN = tokens[0];
     int dec_num = std::stoi(tokens[1]);
     std::vector<Book_info> infos = Book_file.search_Atom(ISBN);
+//    std::cout<<"|"<<infos[0].Quantity<<"|";
     if (infos.empty()) return std::make_pair(ReturnMode::Wrong_Value, std::make_pair(0,0));
     if (dec_num < 1 || dec_num > infos[0].Quantity) return std::make_pair(ReturnMode::Wrong_Value, std::make_pair(0,0));
 
     Book_file.delete_Atom(ISBN, infos[0]);
     infos[0].Quantity -= dec_num;
     long long each_price = infos[0].Price;
+
     Book_file.insert_Atom(ISBN, infos[0]);
     //todo:fiance num
     std::cout<<longlong_to_strdouble(each_price * dec_num) << std::endl;

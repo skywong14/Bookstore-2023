@@ -156,21 +156,23 @@ void User_class::Select(const string& _str){
 
 void User_class::exit_system(){
     while (!User_stack.empty()){
-//        std::cout<<User_stack.size()<<'!'<<std::endl;
-//        std::cout<<User_stack.top().first.id.output()<<std::endl;
         User_stack.pop();
     }
 }
 
 void User_class::change_select(string20 _pre, string20 _now){
-    std::stack<std::pair<User_info, string20> > tmp = {};
+    std::stack<std::pair<User_info, string20> > tmp1 = {}, tmp2 = {};
     std::pair<User_info, string20> atom;
     while (!User_stack.empty()){
         atom = User_stack.top(); User_stack.pop();
         if (atom.second == _pre) atom.second = _now;
-        tmp.push(atom);
+        tmp1.push(atom);
     }
-    User_stack = tmp;
+    while (!tmp1.empty()){
+        tmp2.push(tmp1.top());
+        tmp1.pop();
+    }
+    User_stack = tmp2;
 }
 
 std::pair<string, int> User_class::get_Now(){
