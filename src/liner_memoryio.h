@@ -33,16 +33,25 @@ public:
         return file_tmp.is_open();
     }
 
-    void initialise(string FN = "") {
-        if (FN != "") file_name = FN;
+    int  initialise(string FN = "") {
+        if (!FN.empty())
+            file_name = FN;
 
-        if (check_File_Exists(file_name)) return;
+        if (check_File_Exists(file_name)) return 0;
 
         file.open(file_name, std::ios::out);
         int tmp = 0;
         for (int i = 0; i < info_len; ++i)
             file.write(reinterpret_cast<char *>(&tmp), sizeof(int));
         file.close();
+        file.open(file_name, std::ios::in | std::ios::out | std::ios::binary);
+        if (!file.is_open()){
+            file.open(file_name, std::ios::in | std::ios::out | std::ios::binary);
+            file.close();
+            file.open(file_name, std::ios::in | std::ios::out | std::ios::binary);
+        }
+        file.close();
+        return 1;
     }
 
     int get_info(int n) {

@@ -4,9 +4,9 @@
 #include "log.h"
 
 void Log_class::init(){
-    log_file.initialise(file_name);
+    int new_file = log_file.initialise(file_name);
     logs.initialise(log_file_name);
-    log_file.write_info(0, 1);
+    if (new_file) log_file.write_info(0, 1);
 }
 
 Log_class::Log_class(){
