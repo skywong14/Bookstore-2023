@@ -15,8 +15,8 @@ using std::string;
 
 int main(){
     int line_number = 0;
-    freopen("../test/complex/testcase3/1.in","r",stdin);
-    freopen("out.out","w",stdout);
+//    freopen("../test/complex/testcase3/1.in","r",stdin);
+//    freopen("out.out","w",stdout);
     std::vector<string> tokens;
     User_class user_class;
     Book_class book_class;
